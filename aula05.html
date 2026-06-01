@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 05 — Introdução à Internet das Coisas (IoT) e Inteligência Artificial</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c14; --surface:#0d1421; --card:#111827;
+  --accent1:#fbbf24; --accent2:#f97316;
+  --text:#e2e8f0; --muted:#64748b; --border:rgba(255,255,255,0.08);
+  --green:#10b981; --amber:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;}
+a{text-decoration:none;}
+
+.back-btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:rgba(255,255,255,0.05);border:1px solid var(--border);
+  padding:0.5rem 1rem;border-radius:8px;color:var(--muted);
+  font-size:0.8rem;transition:all 0.3s;margin:1.5rem 2rem;
+}
+.back-btn:hover{color:var(--accent1);border-color:var(--accent1);}
+
+/* HERO */
+.lesson-hero{
+  background:linear-gradient(135deg,#fbbf2422,#f9731622);
+  border-bottom:1px solid var(--border);
+  padding:3rem 2rem 2rem; position:relative;overflow:hidden;
+}
+.lesson-hero::before{
+  content:''; position:absolute;top:-50%;right:-10%;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,#fbbf2420,transparent 70%);
+}
+.lesson-badge{
+  display:inline-block;background:rgba(16,185,129,0.15);
+  color:#10b981;border:1px solid #10b98140;
+  border-radius:20px;padding:0.3rem 1rem;font-size:0.75rem;
+  letter-spacing:2px;font-weight:700;margin-bottom:1rem;
+}
+.lesson-num{font-family:'Orbitron',sans-serif;font-size:0.75rem;color:var(--muted);margin-bottom:0.5rem;letter-spacing:3px;}
+.lesson-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,3vw,2rem);color:#fbbf24;margin-bottom:0.5rem;line-height:1.2;}
+.lesson-date{color:var(--muted);font-size:0.85rem;}
+.lesson-emoji{font-size:5rem;position:absolute;right:3rem;top:50%;transform:translateY(-50%);opacity:0.15;}
+
+/* CONTENT */
+.content-wrap{max-width:900px;margin:0 auto;padding:2rem;}
+.section-head{
+  font-family:'Orbitron',sans-serif;font-size:0.85rem;
+  color:#fbbf24;letter-spacing:3px;text-transform:uppercase;
+  margin:2.5rem 0 1rem;border-left:3px solid #fbbf24;padding-left:1rem;
+}
+.intro-box{
+  background:linear-gradient(135deg,#fbbf2415,#f9731610);
+  border:1px solid #fbbf2430;border-radius:14px;padding:1.5rem;
+  line-height:1.8;color:var(--text);font-size:0.95rem;margin-bottom:1.5rem;
+}
+.topic-card{
+  display:flex;align-items:flex-start;gap:1rem;
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1.2rem;margin-bottom:0.8rem;
+  animation:slideIn 0.5s ease var(--delay,0s) both;
+  transition:border-color 0.3s,transform 0.3s;
+}
+.topic-card:hover{border-color:#fbbf24;transform:translateX(4px);}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.topic-icon{font-size:2rem;flex-shrink:0;}
+.topic-title{font-weight:700;color:#fbbf24;margin-bottom:0.25rem;font-size:0.95rem;}
+.topic-desc{color:var(--muted);font-size:0.85rem;line-height:1.5;}
+
+/* PRODUCT */
+.product-box{
+  background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(0,212,255,0.1));
+  border:1px solid rgba(124,58,237,0.4);border-radius:14px;padding:1.5rem;
+}
+.product-box h3{font-family:'Orbitron',sans-serif;font-size:0.85rem;color:#7c3aed;margin-bottom:0.5rem;}
+.product-box p{color:var(--muted);font-size:0.9rem;line-height:1.6;}
+
+/* CONEXAO */
+.conexao-box{
+  background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(245,158,11,0.05));
+  border:1px solid rgba(245,158,11,0.3);border-radius:14px;padding:1.5rem;
+}
+.conexao-box h3{font-family:'Orbitron',sans-serif;font-size:0.85rem;color:var(--amber);margin-bottom:0.5rem;}
+.conexao-box p{color:var(--muted);font-size:0.9rem;line-height:1.6;}
+
+/* SUMMARY */
+.summary-box{
+  background:var(--surface);border:2px dashed #fbbf2440;border-radius:14px;padding:1.5rem;
+}
+.summary-header{
+  display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;
+  font-family:'Orbitron',sans-serif;font-size:0.85rem;color:#fbbf24;
+}
+.summary-line{
+  display:flex;gap:0.8rem;align-items:flex-start;padding:0.5rem 0;
+  border-bottom:1px solid var(--border);font-size:0.85rem;line-height:1.5;
+}
+.summary-line:last-child{border-bottom:none;}
+.sn{
+  color:#fbbf24;font-weight:700;font-size:0.75rem;
+  background:#fbbf2420;border-radius:4px;padding:0.1rem 0.4rem;
+  white-space:nowrap;
+}
+.copy-btn{
+  display:block;margin-top:1rem;text-align:center;
+  background:#fbbf2420;border:1px solid #fbbf2440;
+  color:#fbbf24;padding:0.6rem;border-radius:8px;
+  font-size:0.8rem;cursor:pointer;transition:all 0.3s;
+}
+.copy-btn:hover{background:#fbbf24;color:#000;}
+
+/* QUIZ */
+.quiz-section{background:var(--surface);border-radius:16px;padding:2rem;}
+.quiz-title{font-family:'Orbitron',sans-serif;font-size:1.2rem;color:#fbbf24;text-align:center;margin-bottom:0.5rem;}
+.quiz-sub{text-align:center;color:var(--muted);font-size:0.85rem;margin-bottom:2rem;}
+.score-bar{display:flex;justify-content:center;gap:2rem;margin-bottom:2rem;}
+.score-item{text-align:center;}
+.score-num{font-family:'Orbitron',sans-serif;font-size:2rem;color:#fbbf24;}
+.score-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;}
+.quiz-q{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1.5rem;margin-bottom:1rem;transition:border-color 0.3s;
+}
+.quiz-q.answered{border-color:#fbbf2440;}
+.q-num{font-size:0.7rem;color:var(--muted);letter-spacing:2px;margin-bottom:0.5rem;}
+.q-text{font-weight:600;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;}
+@media(max-width:500px){.q-opts{grid-template-columns:1fr;}}
+.opt-btn{
+  padding:0.7rem 1rem;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg);color:var(--text);font-size:0.85rem;cursor:pointer;
+  transition:all 0.3s;text-align:left;font-family:'Exo 2',sans-serif;
+}
+.opt-btn:hover:not(:disabled){border-color:#fbbf24;color:#fbbf24;}
+.opt-btn.correct{background:rgba(16,185,129,0.2);border-color:#10b981;color:#10b981;font-weight:700;}
+.opt-btn.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#ef4444;}
+.opt-btn:disabled{cursor:default;}
+.q-feedback{margin-top:0.8rem;font-size:0.85rem;padding:0.5rem;border-radius:6px;display:none;}
+.q-feedback.show{display:block;}
+.q-feedback.ok{background:rgba(16,185,129,0.15);color:#10b981;}
+.q-feedback.err{background:rgba(239,68,68,0.1);color:#ef4444;}
+.quiz-result{
+  text-align:center;padding:2rem;background:linear-gradient(135deg,#fbbf2420,#f9731610);
+  border:1px solid #fbbf2430;border-radius:14px;margin-top:1.5rem;display:none;
+}
+.result-emoji{font-size:3rem;margin-bottom:0.5rem;}
+.result-text{font-family:'Orbitron',sans-serif;font-size:1.1rem;margin-bottom:0.5rem;}
+.result-score{color:#fbbf24;font-size:2rem;font-weight:700;}
+.restart-btn{
+  margin-top:1rem;padding:0.8rem 2rem;border-radius:8px;
+  background:#fbbf24;color:#000;font-weight:700;cursor:pointer;
+  border:none;font-family:'Exo 2',sans-serif;font-size:0.9rem;
+}
+</style>
+</head>
+<body>
+<a href="index.html" class="back-btn">← Voltar ao Menu</a>
+
+<div class="lesson-hero">
+  <div class="lesson-badge">✅ AULA DE REVISÃO</div>
+  <div class="lesson-num">AULA 05 · TECNOLOGIAS EMERGENTES EM IA · 2º BIMESTRE 2026</div>
+  <h1 class="lesson-title">📡 Introdução à Internet das Coisas (IoT) e Inteligência Artificial</h1>
+  <div class="lesson-date">📅 18/05/2026 (Segunda-feira) · EE Manoel Bonifácio Nunes da Cunha</div>
+  <div class="lesson-emoji">📡</div>
+</div>
+
+<div class="content-wrap">
+
+  <div class="section-head">📖 Introdução</div>
+  <div class="intro-box">E se a escola pudesse 'sentir' o ambiente e reagir automaticamente? Luzes que se apagam quando a sala esvazia, chamada automática quando o aluno entra, avisos que se atualizam sozinhos. Isso é o poder da <strong>Internet das Coisas (IoT)</strong> combinada com IA. Vamos descobrir como funciona!</div>
+
+  <div class="section-head">🎯 Conteúdo da Aula</div>
+  
+        <div class="topic-card" style="--delay:0.0s">
+          <div class="topic-icon">🌐</div>
+          <div>
+            <div class="topic-title">O que é IoT</div>
+            <div class="topic-desc">Internet das Coisas: quando objetos físicos se conectam à internet para enviar, receber ou trocar dados. Geladeiras, câmeras, relógios, sensores — tudo pode ser 'inteligente'.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.1s">
+          <div class="topic-icon">📟</div>
+          <div>
+            <div class="topic-title">Dispositivo Comum vs Inteligente</div>
+            <div class="topic-desc">Um termômetro comum só mede temperatura. Um termômetro inteligente (IoT) mede, envia dados para a nuvem, alerta se estiver fora do normal e registra histórico.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.2s">
+          <div class="topic-icon">🔌</div>
+          <div>
+            <div class="topic-title">Sensores — Os Sentidos da IoT</div>
+            <div class="topic-desc">Sensores captam dados do mundo real: temperatura, luz, movimento, presença, som. São como os olhos, ouvidos e pele dos dispositivos IoT.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.30000000000000004s">
+          <div class="topic-icon">🧠</div>
+          <div>
+            <div class="topic-title">Quando a IA Entra</div>
+            <div class="topic-desc">IoT coleta dados; IA analisa e toma decisões. A combinação permite sistemas que aprendem, adaptam e respondem de forma autônoma.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.4s">
+          <div class="topic-icon">🏫</div>
+          <div>
+            <div class="topic-title">IoT na Escola</div>
+            <div class="topic-desc">Controle automático de ar-condicionado, sensor de presença para chamada, detector de barulho em corredores, câmeras inteligentes para segurança.</div>
+          </div>
+        </div>
+
+  <div class="section-head">🏗️ Microproduto da Aula</div>
+  <div class="product-box">
+    <h3>📦 O que você vai produzir</h3>
+    <p>Lista com 5 exemplos de dispositivos IoT (com explicação do que fazem) e 2 usos possíveis na escola, relacionados à Central de Avisos.</p>
+  </div>
+
+  <div class="section-head">🔗 Conexão com a Central de Avisos</div>
+  <div class="conexao-box">
+    <h3>📢 Central de Avisos</h3>
+    <p>A Central de Avisos pode usar sensores IoT: um sensor que detecta quando o quadro de avisos foi atualizado e envia automaticamente uma notificação para os alunos. Ou um sensor de presença que identifica quando o corredor está cheio e amplifica o aviso.</p>
+  </div>
+
+  <div class="section-head">📒 Resumo para o Caderno</div>
+  <div class="summary-box">
+    <div class="summary-header">✏️ Copie as 10 linhas abaixo no seu caderno</div>
+    <div class="summary-line"><span class="sn">01</span><span>IoT significa Internet das Coisas — objetos físicos conectados à internet que trocam dados.</span></div>
+<div class="summary-line"><span class="sn">02</span><span>Dispositivos IoT podem enviar, receber e processar informações automaticamente.</span></div>
+<div class="summary-line"><span class="sn">03</span><span>A diferença entre dispositivo comum e inteligente é a conexão e capacidade de comunicação.</span></div>
+<div class="summary-line"><span class="sn">04</span><span>Sensores são os 'sentidos' dos dispositivos IoT: captam temperatura, luz, movimento, som.</span></div>
+<div class="summary-line"><span class="sn">05</span><span>Quando a IA é combinada com IoT, o sistema pode tomar decisões sem intervenção humana.</span></div>
+<div class="summary-line"><span class="sn">06</span><span>Exemplos de IoT: câmeras inteligentes, relógios, geladeiras, sensores de presença.</span></div>
+<div class="summary-line"><span class="sn">07</span><span>Na escola, IoT pode controlar ar-condicionado, registrar presença e monitorar ambientes.</span></div>
+<div class="summary-line"><span class="sn">08</span><span>A nuvem (internet) permite que dados coletados pelos sensores sejam acessados de qualquer lugar.</span></div>
+<div class="summary-line"><span class="sn">09</span><span>IoT gera grandes volumes de dados que a IA pode usar para aprender e melhorar decisões.</span></div>
+<div class="summary-line"><span class="sn">10</span><span>A combinação IoT + IA está transformando casas, cidades e escolas em ambientes mais inteligentes.</span></div>
+
+    <button class="copy-btn" onclick="copySummary()">📋 Copiar Resumo</button>
+  </div>
+
+  <div class="section-head">🎮 Quiz Gamificado — 10 Questões</div>
+  <div class="quiz-section">
+    <div class="quiz-title">🏆 Quiz da Aula 05</div>
+    <div class="quiz-sub">Responda as questões e veja sua pontuação!</div>
+    <div class="score-bar">
+      <div class="score-item"><div class="score-num" id="correctCount">0</div><div class="score-label">✅ Acertos</div></div>
+      <div class="score-item"><div class="score-num" id="wrongCount">0</div><div class="score-label">❌ Erros</div></div>
+      <div class="score-item"><div class="score-num" id="totalCount">0</div><div class="score-label">📝 Respondidas</div></div>
+    </div>
+    
+        <div class="quiz-q" id="qq0">
+          <div class="q-num">Questão 1</div>
+          <div class="q-text">O que significa IoT?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="0" data-idx="0" data-correct="1">International Online Technology</button>
+<button class="opt-btn" data-q="0" data-idx="1" data-correct="1">Internet das Coisas</button>
+<button class="opt-btn" data-q="0" data-idx="2" data-correct="1">Integrated Output Terminal</button>
+<button class="opt-btn" data-q="0" data-idx="3" data-correct="1">Input Output Transfer</button>
+</div>
+          <div class="q-feedback" id="fb0"></div>
+        </div>
+        <div class="quiz-q" id="qq1">
+          <div class="q-num">Questão 2</div>
+          <div class="q-text">O que torna um dispositivo 'inteligente' no contexto de IoT?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="1" data-idx="0" data-correct="2">Ser muito caro</button>
+<button class="opt-btn" data-q="1" data-idx="1" data-correct="2">Ter tela colorida</button>
+<button class="opt-btn" data-q="1" data-idx="2" data-correct="2">Conectar-se à internet e trocar dados automaticamente</button>
+<button class="opt-btn" data-q="1" data-idx="3" data-correct="2">Ter marca famosa</button>
+</div>
+          <div class="q-feedback" id="fb1"></div>
+        </div>
+        <div class="quiz-q" id="qq2">
+          <div class="q-num">Questão 3</div>
+          <div class="q-text">Qual é a função dos sensores nos dispositivos IoT?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="2" data-idx="0" data-correct="1">Conectar à internet por cabo</button>
+<button class="opt-btn" data-q="2" data-idx="1" data-correct="1">Captar dados do mundo real como temperatura e movimento</button>
+<button class="opt-btn" data-q="2" data-idx="2" data-correct="1">Criar aplicativos</button>
+<button class="opt-btn" data-q="2" data-idx="3" data-correct="1">Editar imagens</button>
+</div>
+          <div class="q-feedback" id="fb2"></div>
+        </div>
+        <div class="quiz-q" id="qq3">
+          <div class="q-num">Questão 4</div>
+          <div class="q-text">O que acontece quando combinamos IoT com IA?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="3" data-idx="0" data-correct="1">O sistema fica mais lento</button>
+<button class="opt-btn" data-q="3" data-idx="1" data-correct="1">O sistema pode aprender, adaptar e responder de forma autônoma</button>
+<button class="opt-btn" data-q="3" data-idx="2" data-correct="1">Aumenta o custo da internet</button>
+<button class="opt-btn" data-q="3" data-idx="3" data-correct="1">Reduz a quantidade de dados</button>
+</div>
+          <div class="q-feedback" id="fb3"></div>
+        </div>
+        <div class="quiz-q" id="qq4">
+          <div class="q-num">Questão 5</div>
+          <div class="q-text">Qual dos seguintes é um dispositivo IoT?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="4" data-idx="0" data-correct="2">Livro didático</button>
+<button class="opt-btn" data-q="4" data-idx="1" data-correct="2">Caderno</button>
+<button class="opt-btn" data-q="4" data-idx="2" data-correct="2">Sensor de presença conectado à internet</button>
+<button class="opt-btn" data-q="4" data-idx="3" data-correct="2">Caneta comum</button>
+</div>
+          <div class="q-feedback" id="fb4"></div>
+        </div>
+        <div class="quiz-q" id="qq5">
+          <div class="q-num">Questão 6</div>
+          <div class="q-text">Na escola, como a IoT poderia ajudar com a Central de Avisos?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="5" data-idx="0" data-correct="1">Imprimindo cartazes automaticamente</button>
+<button class="opt-btn" data-q="5" data-idx="1" data-correct="1">Sensor que detecta atualização no quadro e envia notificação aos alunos</button>
+<button class="opt-btn" data-q="5" data-idx="2" data-correct="1">Pintando as paredes</button>
+<button class="opt-btn" data-q="5" data-idx="3" data-correct="1">Criando provas</button>
+</div>
+          <div class="q-feedback" id="fb5"></div>
+        </div>
+        <div class="quiz-q" id="qq6">
+          <div class="q-num">Questão 7</div>
+          <div class="q-text">O que é a 'nuvem' no contexto de IoT?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="6" data-idx="0" data-correct="1">Nuvem do céu com chuva</button>
+<button class="opt-btn" data-q="6" data-idx="1" data-correct="1">Armazenamento e processamento de dados pela internet</button>
+<button class="opt-btn" data-q="6" data-idx="2" data-correct="1">Um dispositivo físico</button>
+<button class="opt-btn" data-q="6" data-idx="3" data-correct="1">Um sensor especial</button>
+</div>
+          <div class="q-feedback" id="fb6"></div>
+        </div>
+        <div class="quiz-q" id="qq7">
+          <div class="q-num">Questão 8</div>
+          <div class="q-text">Por que IoT gera grandes volumes de dados?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="7" data-idx="0" data-correct="0">Porque os sensores ficam ligados continuamente coletando informações</button>
+<button class="opt-btn" data-q="7" data-idx="1" data-correct="0">Porque é muito caro</button>
+<button class="opt-btn" data-q="7" data-idx="2" data-correct="0">Porque usa muito internet</button>
+<button class="opt-btn" data-q="7" data-idx="3" data-correct="0">Porque tem muitos botões</button>
+</div>
+          <div class="q-feedback" id="fb7"></div>
+        </div>
+        <div class="quiz-q" id="qq8">
+          <div class="q-num">Questão 9</div>
+          <div class="q-text">Qual a diferença entre um termômetro comum e um termômetro IoT?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="8" data-idx="0" data-correct="2">O IoT é mais preciso</button>
+<button class="opt-btn" data-q="8" data-idx="1" data-correct="2">O comum é digital</button>
+<button class="opt-btn" data-q="8" data-idx="2" data-correct="2">O IoT envia dados, alerta e registra histórico automaticamente</button>
+<button class="opt-btn" data-q="8" data-idx="3" data-correct="2">Não há diferença</button>
+</div>
+          <div class="q-feedback" id="fb8"></div>
+        </div>
+        <div class="quiz-q" id="qq9">
+          <div class="q-num">Questão 10</div>
+          <div class="q-text">IoT está transformando quais ambientes?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="9" data-idx="0" data-correct="1">Apenas indústrias</button>
+<button class="opt-btn" data-q="9" data-idx="1" data-correct="1">Casas, cidades e escolas entre outros</button>
+<button class="opt-btn" data-q="9" data-idx="2" data-correct="1">Apenas hospitais</button>
+<button class="opt-btn" data-q="9" data-idx="3" data-correct="1">Apenas aeroportos</button>
+</div>
+          <div class="q-feedback" id="fb9"></div>
+        </div>
+    <div class="quiz-result" id="quizResult">
+      <div class="result-emoji" id="resultEmoji">🏆</div>
+      <div class="result-text">Resultado Final!</div>
+      <div class="result-score" id="resultScore"></div>
+      <button class="restart-btn" onclick="restartQuiz()">🔄 Tentar Novamente</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let correct=0,wrong=0,answered=0;
+const total=10;
+const summaryLines=[...document.querySelectorAll('.summary-line')].map(l=>l.querySelector('span:last-child').textContent);
+
+function copySummary(){
+  const txt=summaryLines.map((l,i)=>`${i+1}. ${l}`).join('\n');
+  navigator.clipboard.writeText(txt).then(()=>alert('✅ Resumo copiado! Cole no seu caderno.'));
+}
+
+document.querySelectorAll('.opt-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const q=this.dataset.q;
+    const correctIdx=parseInt(this.dataset.correct);
+    const myIdx=parseInt(this.dataset.idx);
+    const container=document.getElementById('qq'+q);
+    if(container.classList.contains('answered')) return;
+    container.classList.add('answered');
+    container.querySelectorAll('.opt-btn').forEach(b=>{
+      b.disabled=true;
+      if(parseInt(b.dataset.idx)===correctIdx) b.classList.add('correct');
+      else if(b===this) b.classList.add('wrong');
+    });
+    const fb=document.getElementById('fb'+q);
+    fb.classList.add('show');
+    if(myIdx===correctIdx){
+      fb.textContent='✅ Correto! Muito bem!';
+      fb.classList.add('ok');
+      correct++;
+      document.getElementById('correctCount').textContent=correct;
+    }else{
+      fb.textContent='❌ Ops! A resposta correta está destacada em verde.';
+      fb.classList.add('err');
+      wrong++;
+      document.getElementById('wrongCount').textContent=wrong;
+    }
+    answered++;
+    document.getElementById('totalCount').textContent=answered;
+    if(answered===total){
+      const r=document.getElementById('quizResult');
+      r.style.display='block';
+      const score=Math.round((correct/total)*100);
+      document.getElementById('resultScore').textContent=correct+'/'+total+' ('+score+'%)';
+      document.getElementById('resultEmoji').textContent=score>=80?'🏆':score>=60?'😊':'💪';
+      r.scrollIntoView({behavior:'smooth'});
+    }
+  });
+});
+
+function restartQuiz(){
+  correct=0;wrong=0;answered=0;
+  ['correctCount','wrongCount','totalCount'].forEach(id=>document.getElementById(id).textContent='0');
+  document.getElementById('quizResult').style.display='none';
+  document.querySelectorAll('.quiz-q').forEach(q=>{
+    q.classList.remove('answered');
+    q.querySelectorAll('.opt-btn').forEach(b=>{
+      b.disabled=false;
+      b.classList.remove('correct','wrong');
+    });
+    q.querySelectorAll('.q-feedback').forEach(f=>{
+      f.classList.remove('show','ok','err');
+      f.textContent='';
+    });
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 08 — Aplicações de IoT e IA — Casas, Cidades e Saúde</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c14; --surface:#0d1421; --card:#111827;
+  --accent1:#a3e635; --accent2:#22d3ee;
+  --text:#e2e8f0; --muted:#64748b; --border:rgba(255,255,255,0.08);
+  --green:#10b981; --amber:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;}
+a{text-decoration:none;}
+
+.back-btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:rgba(255,255,255,0.05);border:1px solid var(--border);
+  padding:0.5rem 1rem;border-radius:8px;color:var(--muted);
+  font-size:0.8rem;transition:all 0.3s;margin:1.5rem 2rem;
+}
+.back-btn:hover{color:var(--accent1);border-color:var(--accent1);}
+
+/* HERO */
+.lesson-hero{
+  background:linear-gradient(135deg,#a3e63522,#22d3ee22);
+  border-bottom:1px solid var(--border);
+  padding:3rem 2rem 2rem; position:relative;overflow:hidden;
+}
+.lesson-hero::before{
+  content:''; position:absolute;top:-50%;right:-10%;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,#a3e63520,transparent 70%);
+}
+.lesson-badge{
+  display:inline-block;background:rgba(16,185,129,0.15);
+  color:#10b981;border:1px solid #10b98140;
+  border-radius:20px;padding:0.3rem 1rem;font-size:0.75rem;
+  letter-spacing:2px;font-weight:700;margin-bottom:1rem;
+}
+.lesson-num{font-family:'Orbitron',sans-serif;font-size:0.75rem;color:var(--muted);margin-bottom:0.5rem;letter-spacing:3px;}
+.lesson-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,3vw,2rem);color:#a3e635;margin-bottom:0.5rem;line-height:1.2;}
+.lesson-date{color:var(--muted);font-size:0.85rem;}
+.lesson-emoji{font-size:5rem;position:absolute;right:3rem;top:50%;transform:translateY(-50%);opacity:0.15;}
+
+/* CONTENT */
+.content-wrap{max-width:900px;margin:0 auto;padding:2rem;}
+.section-head{
+  font-family:'Orbitron',sans-serif;font-size:0.85rem;
+  color:#a3e635;letter-spacing:3px;text-transform:uppercase;
+  margin:2.5rem 0 1rem;border-left:3px solid #a3e635;padding-left:1rem;
+}
+.intro-box{
+  background:linear-gradient(135deg,#a3e63515,#22d3ee10);
+  border:1px solid #a3e63530;border-radius:14px;padding:1.5rem;
+  line-height:1.8;color:var(--text);font-size:0.95rem;margin-bottom:1.5rem;
+}
+.topic-card{
+  display:flex;align-items:flex-start;gap:1rem;
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1.2rem;margin-bottom:0.8rem;
+  animation:slideIn 0.5s ease var(--delay,0s) both;
+  transition:border-color 0.3s,transform 0.3s;
+}
+.topic-card:hover{border-color:#a3e635;transform:translateX(4px);}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.topic-icon{font-size:2rem;flex-shrink:0;}
+.topic-title{font-weight:700;color:#a3e635;margin-bottom:0.25rem;font-size:0.95rem;}
+.topic-desc{color:var(--muted);font-size:0.85rem;line-height:1.5;}
+
+/* PRODUCT */
+.product-box{
+  background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(0,212,255,0.1));
+  border:1px solid rgba(124,58,237,0.4);border-radius:14px;padding:1.5rem;
+}
+.product-box h3{font-family:'Orbitron',sans-serif;font-size:0.85rem;color:#7c3aed;margin-bottom:0.5rem;}
+.product-box p{color:var(--muted);font-size:0.9rem;line-height:1.6;}
+
+/* CONEXAO */
+.conexao-box{
+  background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(245,158,11,0.05));
+  border:1px solid rgba(245,158,11,0.3);border-radius:14px;padding:1.5rem;
+}
+.conexao-box h3{font-family:'Orbitron',sans-serif;font-size:0.85rem;color:var(--amber);margin-bottom:0.5rem;}
+.conexao-box p{color:var(--muted);font-size:0.9rem;line-height:1.6;}
+
+/* SUMMARY */
+.summary-box{
+  background:var(--surface);border:2px dashed #a3e63540;border-radius:14px;padding:1.5rem;
+}
+.summary-header{
+  display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;
+  font-family:'Orbitron',sans-serif;font-size:0.85rem;color:#a3e635;
+}
+.summary-line{
+  display:flex;gap:0.8rem;align-items:flex-start;padding:0.5rem 0;
+  border-bottom:1px solid var(--border);font-size:0.85rem;line-height:1.5;
+}
+.summary-line:last-child{border-bottom:none;}
+.sn{
+  color:#a3e635;font-weight:700;font-size:0.75rem;
+  background:#a3e63520;border-radius:4px;padding:0.1rem 0.4rem;
+  white-space:nowrap;
+}
+.copy-btn{
+  display:block;margin-top:1rem;text-align:center;
+  background:#a3e63520;border:1px solid #a3e63540;
+  color:#a3e635;padding:0.6rem;border-radius:8px;
+  font-size:0.8rem;cursor:pointer;transition:all 0.3s;
+}
+.copy-btn:hover{background:#a3e635;color:#000;}
+
+/* QUIZ */
+.quiz-section{background:var(--surface);border-radius:16px;padding:2rem;}
+.quiz-title{font-family:'Orbitron',sans-serif;font-size:1.2rem;color:#a3e635;text-align:center;margin-bottom:0.5rem;}
+.quiz-sub{text-align:center;color:var(--muted);font-size:0.85rem;margin-bottom:2rem;}
+.score-bar{display:flex;justify-content:center;gap:2rem;margin-bottom:2rem;}
+.score-item{text-align:center;}
+.score-num{font-family:'Orbitron',sans-serif;font-size:2rem;color:#a3e635;}
+.score-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;}
+.quiz-q{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1.5rem;margin-bottom:1rem;transition:border-color 0.3s;
+}
+.quiz-q.answered{border-color:#a3e63540;}
+.q-num{font-size:0.7rem;color:var(--muted);letter-spacing:2px;margin-bottom:0.5rem;}
+.q-text{font-weight:600;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;}
+@media(max-width:500px){.q-opts{grid-template-columns:1fr;}}
+.opt-btn{
+  padding:0.7rem 1rem;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg);color:var(--text);font-size:0.85rem;cursor:pointer;
+  transition:all 0.3s;text-align:left;font-family:'Exo 2',sans-serif;
+}
+.opt-btn:hover:not(:disabled){border-color:#a3e635;color:#a3e635;}
+.opt-btn.correct{background:rgba(16,185,129,0.2);border-color:#10b981;color:#10b981;font-weight:700;}
+.opt-btn.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#ef4444;}
+.opt-btn:disabled{cursor:default;}
+.q-feedback{margin-top:0.8rem;font-size:0.85rem;padding:0.5rem;border-radius:6px;display:none;}
+.q-feedback.show{display:block;}
+.q-feedback.ok{background:rgba(16,185,129,0.15);color:#10b981;}
+.q-feedback.err{background:rgba(239,68,68,0.1);color:#ef4444;}
+.quiz-result{
+  text-align:center;padding:2rem;background:linear-gradient(135deg,#a3e63520,#22d3ee10);
+  border:1px solid #a3e63530;border-radius:14px;margin-top:1.5rem;display:none;
+}
+.result-emoji{font-size:3rem;margin-bottom:0.5rem;}
+.result-text{font-family:'Orbitron',sans-serif;font-size:1.1rem;margin-bottom:0.5rem;}
+.result-score{color:#a3e635;font-size:2rem;font-weight:700;}
+.restart-btn{
+  margin-top:1rem;padding:0.8rem 2rem;border-radius:8px;
+  background:#a3e635;color:#000;font-weight:700;cursor:pointer;
+  border:none;font-family:'Exo 2',sans-serif;font-size:0.9rem;
+}
+</style>
+</head>
+<body>
+<a href="index.html" class="back-btn">← Voltar ao Menu</a>
+
+<div class="lesson-hero">
+  <div class="lesson-badge">✅ AULA DE REVISÃO</div>
+  <div class="lesson-num">AULA 08 · TECNOLOGIAS EMERGENTES EM IA · 2º BIMESTRE 2026</div>
+  <h1 class="lesson-title">🏙️ Aplicações de IoT e IA — Casas, Cidades e Saúde</h1>
+  <div class="lesson-date">📅 25/05/2026 (Segunda-feira) · EE Manoel Bonifácio Nunes da Cunha</div>
+  <div class="lesson-emoji">🏙️</div>
+</div>
+
+<div class="content-wrap">
+
+  <div class="section-head">📖 Introdução</div>
+  <div class="intro-box">IoT e IA juntas estão transformando três grandes áreas: a <strong>casa</strong> onde moramos, a <strong>cidade</strong> onde vivemos e a <strong>saúde</strong> que cuidamos. Cada área tem aplicações que já existem hoje e outras que estão chegando. Vamos explorar esse futuro que já é presente!</div>
+
+  <div class="section-head">🎯 Conteúdo da Aula</div>
+  
+        <div class="topic-card" style="--delay:0.0s">
+          <div class="topic-icon">🏠</div>
+          <div>
+            <div class="topic-title">Casas Inteligentes</div>
+            <div class="topic-desc">Controle de luzes, temperatura, segurança e eletrodomésticos por voz ou smartphone. Assistentes virtuais (Alexa, Google Home). Câmeras de segurança inteligentes. Fechaduras digitais.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.1s">
+          <div class="topic-icon">🏙️</div>
+          <div>
+            <div class="topic-title">Cidades Inteligentes</div>
+            <div class="topic-desc">Semáforos que se adaptam ao trânsito em tempo real, câmeras que detectam acidentes, sensores de qualidade do ar, gestão inteligente de resíduos, estacionamentos com vagas monitoradas.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.2s">
+          <div class="topic-icon">💊</div>
+          <div>
+            <div class="topic-title">Saúde Inteligente</div>
+            <div class="topic-desc">Monitores de batimentos cardíacos, sensores de glicose, alertas automáticos de emergência, exames analisados por IA, acompanhamento remoto de pacientes crônicos.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.30000000000000004s">
+          <div class="topic-icon">🔗</div>
+          <div>
+            <div class="topic-title">IoT + IA = Decisão Automática</div>
+            <div class="topic-desc">Não é só coletar dados — é usar IA para tomar decisões. Semáforo: sensores coletam fluxo → IA ajusta tempo de verde. Hospital: sensor capta batimento → IA alerta se anormal.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.4s">
+          <div class="topic-icon">🌱</div>
+          <div>
+            <div class="topic-title">Benefícios e Desafios</div>
+            <div class="topic-desc">Benefícios: eficiência, qualidade de vida, sustentabilidade. Desafios: privacidade, segurança dos dados, exclusão digital, dependência tecnológica.</div>
+          </div>
+        </div>
+
+  <div class="section-head">🏗️ Microproduto da Aula</div>
+  <div class="product-box">
+    <h3>📦 O que você vai produzir</h3>
+    <p>Tabela com 3 áreas (Casas, Cidades, Saúde) + 1 Exemplo de aplicação + 1 Benefício claro para cada área.</p>
+  </div>
+
+  <div class="section-head">🔗 Conexão com a Central de Avisos</div>
+  <div class="conexao-box">
+    <h3>📢 Central de Avisos</h3>
+    <p>A escola também pode se tornar mais inteligente! Os mesmos princípios das cidades inteligentes se aplicam: sensores que coletam dados, IA que processa e gera avisos úteis. A Central de Avisos é nossa versão de 'escola inteligente'.</p>
+  </div>
+
+  <div class="section-head">📒 Resumo para o Caderno</div>
+  <div class="summary-box">
+    <div class="summary-header">✏️ Copie as 10 linhas abaixo no seu caderno</div>
+    <div class="summary-line"><span class="sn">01</span><span>A combinação entre IoT e IA está transformando casas, cidades e a área da saúde.</span></div>
+<div class="summary-line"><span class="sn">02</span><span>Em casas inteligentes, dispositivos se conectam e são controlados remotamente ou por voz.</span></div>
+<div class="summary-line"><span class="sn">03</span><span>Cidades inteligentes usam sensores para otimizar trânsito, segurança e gestão de recursos.</span></div>
+<div class="summary-line"><span class="sn">04</span><span>Na saúde, sensores monitoram sinais vitais e a IA analisa dados para alertar sobre riscos.</span></div>
+<div class="summary-line"><span class="sn">05</span><span>A diferença é que não é só coletar dados — a IA usa esses dados para tomar decisões automáticas.</span></div>
+<div class="summary-line"><span class="sn">06</span><span>Semáforos inteligentes ajustam o tempo de verde baseados no fluxo real de veículos.</span></div>
+<div class="summary-line"><span class="sn">07</span><span>Monitores de saúde conectados podem alertar automaticamente em caso de emergência.</span></div>
+<div class="summary-line"><span class="sn">08</span><span>Benefícios incluem eficiência, qualidade de vida melhorada e uso sustentável de recursos.</span></div>
+<div class="summary-line"><span class="sn">09</span><span>Desafios incluem privacidade, segurança dos dados e risco de exclusão digital.</span></div>
+<div class="summary-line"><span class="sn">10</span><span>Os mesmos princípios de cidades inteligentes podem ser aplicados para criar escolas inteligentes.</span></div>
+
+    <button class="copy-btn" onclick="copySummary()">📋 Copiar Resumo</button>
+  </div>
+
+  <div class="section-head">🎮 Quiz Gamificado — 10 Questões</div>
+  <div class="quiz-section">
+    <div class="quiz-title">🏆 Quiz da Aula 08</div>
+    <div class="quiz-sub">Responda as questões e veja sua pontuação!</div>
+    <div class="score-bar">
+      <div class="score-item"><div class="score-num" id="correctCount">0</div><div class="score-label">✅ Acertos</div></div>
+      <div class="score-item"><div class="score-num" id="wrongCount">0</div><div class="score-label">❌ Erros</div></div>
+      <div class="score-item"><div class="score-num" id="totalCount">0</div><div class="score-label">📝 Respondidas</div></div>
+    </div>
+    
+        <div class="quiz-q" id="qq0">
+          <div class="q-num">Questão 1</div>
+          <div class="q-text">Qual das opções é um exemplo de casa inteligente?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="0" data-idx="0" data-correct="1">Televisor analógico</button>
+<button class="opt-btn" data-q="0" data-idx="1" data-correct="1">Assistente virtual que controla luzes e temperatura</button>
+<button class="opt-btn" data-q="0" data-idx="2" data-correct="1">Geladeira sem internet</button>
+<button class="opt-btn" data-q="0" data-idx="3" data-correct="1">Fogão a lenha</button>
+</div>
+          <div class="q-feedback" id="fb0"></div>
+        </div>
+        <div class="quiz-q" id="qq1">
+          <div class="q-num">Questão 2</div>
+          <div class="q-text">Como cidades inteligentes usam sensores em semáforos?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="1" data-idx="0" data-correct="2">Para decoração</button>
+<button class="opt-btn" data-q="1" data-idx="1" data-correct="2">Para medir temperatura do asfalto</button>
+<button class="opt-btn" data-q="1" data-idx="2" data-correct="2">Para ajustar o tempo de verde baseado no fluxo de trânsito real</button>
+<button class="opt-btn" data-q="1" data-idx="3" data-correct="2">Para emitir multas automaticamente</button>
+</div>
+          <div class="q-feedback" id="fb1"></div>
+        </div>
+        <div class="quiz-q" id="qq2">
+          <div class="q-num">Questão 3</div>
+          <div class="q-text">Qual aplicação de IoT na saúde salva vidas?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="2" data-idx="0" data-correct="1">App de receitas</button>
+<button class="opt-btn" data-q="2" data-idx="1" data-correct="1">Sensor que monitora batimentos e alerta automaticamente em emergências</button>
+<button class="opt-btn" data-q="2" data-idx="2" data-correct="1">Aplicativo de música</button>
+<button class="opt-btn" data-q="2" data-idx="3" data-correct="1">Jogo de videogame</button>
+</div>
+          <div class="q-feedback" id="fb2"></div>
+        </div>
+        <div class="quiz-q" id="qq3">
+          <div class="q-num">Questão 4</div>
+          <div class="q-text">O que diferencia IoT + IA de simplesmente coletar dados?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="3" data-idx="0" data-correct="1">Nada, são iguais</button>
+<button class="opt-btn" data-q="3" data-idx="1" data-correct="1">A IA usa os dados coletados para tomar decisões automáticas</button>
+<button class="opt-btn" data-q="3" data-idx="2" data-correct="1">O preço é maior</button>
+<button class="opt-btn" data-q="3" data-idx="3" data-correct="1">Precisa de mais internet</button>
+</div>
+          <div class="q-feedback" id="fb3"></div>
+        </div>
+        <div class="quiz-q" id="qq4">
+          <div class="q-num">Questão 5</div>
+          <div class="q-text">Qual é um desafio das cidades inteligentes?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="4" data-idx="0" data-correct="1">Ter semáforos bonitos</button>
+<button class="opt-btn" data-q="4" data-idx="1" data-correct="1">Privacidade e segurança dos dados coletados pelos sensores</button>
+<button class="opt-btn" data-q="4" data-idx="2" data-correct="1">Ter muitas câmeras coloridas</button>
+<button class="opt-btn" data-q="4" data-idx="3" data-correct="1">Construir mais prédios</button>
+</div>
+          <div class="q-feedback" id="fb4"></div>
+        </div>
+        <div class="quiz-q" id="qq5">
+          <div class="q-num">Questão 6</div>
+          <div class="q-text">Qual dos seguintes é um benefício de IoT e IA na saúde?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="5" data-idx="0" data-correct="1">Substituir todos os médicos</button>
+<button class="opt-btn" data-q="5" data-idx="1" data-correct="1">Acompanhamento remoto de pacientes com alertas automáticos</button>
+<button class="opt-btn" data-q="5" data-idx="2" data-correct="1">Vender medicamentos online</button>
+<button class="opt-btn" data-q="5" data-idx="3" data-correct="1">Criar novas doenças</button>
+</div>
+          <div class="q-feedback" id="fb5"></div>
+        </div>
+        <div class="quiz-q" id="qq6">
+          <div class="q-num">Questão 7</div>
+          <div class="q-text">O que é exclusão digital no contexto de cidades inteligentes?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="6" data-idx="0" data-correct="1">Pessoas que não têm smartphone de última geração</button>
+<button class="opt-btn" data-q="6" data-idx="1" data-correct="1">Parte da população que não tem acesso à tecnologia e fica fora dos benefícios</button>
+<button class="opt-btn" data-q="6" data-idx="2" data-correct="1">Cidades sem semáforos</button>
+<button class="opt-btn" data-q="6" data-idx="3" data-correct="1">Bairros sem câmeras</button>
+</div>
+          <div class="q-feedback" id="fb6"></div>
+        </div>
+        <div class="quiz-q" id="qq7">
+          <div class="q-num">Questão 8</div>
+          <div class="q-text">Como a Central de Avisos se relaciona com o conceito de cidade inteligente?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="7" data-idx="0" data-correct="1">Não tem relação</button>
+<button class="opt-btn" data-q="7" data-idx="1" data-correct="1">Aplica os mesmos princípios: sensores + IA + aviso útil, mas no contexto escolar</button>
+<button class="opt-btn" data-q="7" data-idx="2" data-correct="1">É mais avançada que cidades inteligentes</button>
+<button class="opt-btn" data-q="7" data-idx="3" data-correct="1">É um projeto de uma cidade inteligente</button>
+</div>
+          <div class="q-feedback" id="fb7"></div>
+        </div>
+        <div class="quiz-q" id="qq8">
+          <div class="q-num">Questão 9</div>
+          <div class="q-text">O que fazem as assistentes virtuais em casas inteligentes?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="8" data-idx="0" data-correct="1">Cozinham automaticamente</button>
+<button class="opt-btn" data-q="8" data-idx="1" data-correct="1">Controlam dispositivos conectados por comando de voz</button>
+<button class="opt-btn" data-q="8" data-idx="2" data-correct="1">Fazem compras sozinhas</button>
+<button class="opt-btn" data-q="8" data-idx="3" data-correct="1">Substituem a escola</button>
+</div>
+          <div class="q-feedback" id="fb8"></div>
+        </div>
+        <div class="quiz-q" id="qq9">
+          <div class="q-num">Questão 10</div>
+          <div class="q-text">Monitorar resíduos e lixo com sensores IoT numa cidade serve para:</div>
+          <div class="q-opts"><button class="opt-btn" data-q="9" data-idx="0" data-correct="1">Decorar os caminhões</button>
+<button class="opt-btn" data-q="9" data-idx="1" data-correct="1">Otimizar coleta, reduzir custos e melhorar sustentabilidade</button>
+<button class="opt-btn" data-q="9" data-idx="2" data-correct="1">Criar mais lixo</button>
+<button class="opt-btn" data-q="9" data-idx="3" data-correct="1">Substituir garis</button>
+</div>
+          <div class="q-feedback" id="fb9"></div>
+        </div>
+    <div class="quiz-result" id="quizResult">
+      <div class="result-emoji" id="resultEmoji">🏆</div>
+      <div class="result-text">Resultado Final!</div>
+      <div class="result-score" id="resultScore"></div>
+      <button class="restart-btn" onclick="restartQuiz()">🔄 Tentar Novamente</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let correct=0,wrong=0,answered=0;
+const total=10;
+const summaryLines=[...document.querySelectorAll('.summary-line')].map(l=>l.querySelector('span:last-child').textContent);
+
+function copySummary(){
+  const txt=summaryLines.map((l,i)=>`${i+1}. ${l}`).join('\n');
+  navigator.clipboard.writeText(txt).then(()=>alert('✅ Resumo copiado! Cole no seu caderno.'));
+}
+
+document.querySelectorAll('.opt-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const q=this.dataset.q;
+    const correctIdx=parseInt(this.dataset.correct);
+    const myIdx=parseInt(this.dataset.idx);
+    const container=document.getElementById('qq'+q);
+    if(container.classList.contains('answered')) return;
+    container.classList.add('answered');
+    container.querySelectorAll('.opt-btn').forEach(b=>{
+      b.disabled=true;
+      if(parseInt(b.dataset.idx)===correctIdx) b.classList.add('correct');
+      else if(b===this) b.classList.add('wrong');
+    });
+    const fb=document.getElementById('fb'+q);
+    fb.classList.add('show');
+    if(myIdx===correctIdx){
+      fb.textContent='✅ Correto! Muito bem!';
+      fb.classList.add('ok');
+      correct++;
+      document.getElementById('correctCount').textContent=correct;
+    }else{
+      fb.textContent='❌ Ops! A resposta correta está destacada em verde.';
+      fb.classList.add('err');
+      wrong++;
+      document.getElementById('wrongCount').textContent=wrong;
+    }
+    answered++;
+    document.getElementById('totalCount').textContent=answered;
+    if(answered===total){
+      const r=document.getElementById('quizResult');
+      r.style.display='block';
+      const score=Math.round((correct/total)*100);
+      document.getElementById('resultScore').textContent=correct+'/'+total+' ('+score+'%)';
+      document.getElementById('resultEmoji').textContent=score>=80?'🏆':score>=60?'😊':'💪';
+      r.scrollIntoView({behavior:'smooth'});
+    }
+  });
+});
+
+function restartQuiz(){
+  correct=0;wrong=0;answered=0;
+  ['correctCount','wrongCount','totalCount'].forEach(id=>document.getElementById(id).textContent='0');
+  document.getElementById('quizResult').style.display='none';
+  document.querySelectorAll('.quiz-q').forEach(q=>{
+    q.classList.remove('answered');
+    q.querySelectorAll('.opt-btn').forEach(b=>{
+      b.disabled=false;
+      b.classList.remove('correct','wrong');
+    });
+    q.querySelectorAll('.q-feedback').forEach(f=>{
+      f.classList.remove('show','ok','err');
+      f.textContent='';
+    });
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

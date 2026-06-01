@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 04 — Aplicando Visão Computacional ao Projeto Central de Avisos</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c14; --surface:#0d1421; --card:#111827;
+  --accent1:#34d399; --accent2:#06b6d4;
+  --text:#e2e8f0; --muted:#64748b; --border:rgba(255,255,255,0.08);
+  --green:#10b981; --amber:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;}
+a{text-decoration:none;}
+
+.back-btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:rgba(255,255,255,0.05);border:1px solid var(--border);
+  padding:0.5rem 1rem;border-radius:8px;color:var(--muted);
+  font-size:0.8rem;transition:all 0.3s;margin:1.5rem 2rem;
+}
+.back-btn:hover{color:var(--accent1);border-color:var(--accent1);}
+
+/* HERO */
+.lesson-hero{
+  background:linear-gradient(135deg,#34d39922,#06b6d422);
+  border-bottom:1px solid var(--border);
+  padding:3rem 2rem 2rem; position:relative;overflow:hidden;
+}
+.lesson-hero::before{
+  content:''; position:absolute;top:-50%;right:-10%;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,#34d39920,transparent 70%);
+}
+.lesson-badge{
+  display:inline-block;background:rgba(16,185,129,0.15);
+  color:#10b981;border:1px solid #10b98140;
+  border-radius:20px;padding:0.3rem 1rem;font-size:0.75rem;
+  letter-spacing:2px;font-weight:700;margin-bottom:1rem;
+}
+.lesson-num{font-family:'Orbitron',sans-serif;font-size:0.75rem;color:var(--muted);margin-bottom:0.5rem;letter-spacing:3px;}
+.lesson-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,3vw,2rem);color:#34d399;margin-bottom:0.5rem;line-height:1.2;}
+.lesson-date{color:var(--muted);font-size:0.85rem;}
+.lesson-emoji{font-size:5rem;position:absolute;right:3rem;top:50%;transform:translateY(-50%);opacity:0.15;}
+
+/* CONTENT */
+.content-wrap{max-width:900px;margin:0 auto;padding:2rem;}
+.section-head{
+  font-family:'Orbitron',sans-serif;font-size:0.85rem;
+  color:#34d399;letter-spacing:3px;text-transform:uppercase;
+  margin:2.5rem 0 1rem;border-left:3px solid #34d399;padding-left:1rem;
+}
+.intro-box{
+  background:linear-gradient(135deg,#34d39915,#06b6d410);
+  border:1px solid #34d39930;border-radius:14px;padding:1.5rem;
+  line-height:1.8;color:var(--text);font-size:0.95rem;margin-bottom:1.5rem;
+}
+.topic-card{
+  display:flex;align-items:flex-start;gap:1rem;
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1.2rem;margin-bottom:0.8rem;
+  animation:slideIn 0.5s ease var(--delay,0s) both;
+  transition:border-color 0.3s,transform 0.3s;
+}
+.topic-card:hover{border-color:#34d399;transform:translateX(4px);}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.topic-icon{font-size:2rem;flex-shrink:0;}
+.topic-title{font-weight:700;color:#34d399;margin-bottom:0.25rem;font-size:0.95rem;}
+.topic-desc{color:var(--muted);font-size:0.85rem;line-height:1.5;}
+
+/* PRODUCT */
+.product-box{
+  background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(0,212,255,0.1));
+  border:1px solid rgba(124,58,237,0.4);border-radius:14px;padding:1.5rem;
+}
+.product-box h3{font-family:'Orbitron',sans-serif;font-size:0.85rem;color:#7c3aed;margin-bottom:0.5rem;}
+.product-box p{color:var(--muted);font-size:0.9rem;line-height:1.6;}
+
+/* CONEXAO */
+.conexao-box{
+  background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(245,158,11,0.05));
+  border:1px solid rgba(245,158,11,0.3);border-radius:14px;padding:1.5rem;
+}
+.conexao-box h3{font-family:'Orbitron',sans-serif;font-size:0.85rem;color:var(--amber);margin-bottom:0.5rem;}
+.conexao-box p{color:var(--muted);font-size:0.9rem;line-height:1.6;}
+
+/* SUMMARY */
+.summary-box{
+  background:var(--surface);border:2px dashed #34d39940;border-radius:14px;padding:1.5rem;
+}
+.summary-header{
+  display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;
+  font-family:'Orbitron',sans-serif;font-size:0.85rem;color:#34d399;
+}
+.summary-line{
+  display:flex;gap:0.8rem;align-items:flex-start;padding:0.5rem 0;
+  border-bottom:1px solid var(--border);font-size:0.85rem;line-height:1.5;
+}
+.summary-line:last-child{border-bottom:none;}
+.sn{
+  color:#34d399;font-weight:700;font-size:0.75rem;
+  background:#34d39920;border-radius:4px;padding:0.1rem 0.4rem;
+  white-space:nowrap;
+}
+.copy-btn{
+  display:block;margin-top:1rem;text-align:center;
+  background:#34d39920;border:1px solid #34d39940;
+  color:#34d399;padding:0.6rem;border-radius:8px;
+  font-size:0.8rem;cursor:pointer;transition:all 0.3s;
+}
+.copy-btn:hover{background:#34d399;color:#000;}
+
+/* QUIZ */
+.quiz-section{background:var(--surface);border-radius:16px;padding:2rem;}
+.quiz-title{font-family:'Orbitron',sans-serif;font-size:1.2rem;color:#34d399;text-align:center;margin-bottom:0.5rem;}
+.quiz-sub{text-align:center;color:var(--muted);font-size:0.85rem;margin-bottom:2rem;}
+.score-bar{display:flex;justify-content:center;gap:2rem;margin-bottom:2rem;}
+.score-item{text-align:center;}
+.score-num{font-family:'Orbitron',sans-serif;font-size:2rem;color:#34d399;}
+.score-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;}
+.quiz-q{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1.5rem;margin-bottom:1rem;transition:border-color 0.3s;
+}
+.quiz-q.answered{border-color:#34d39940;}
+.q-num{font-size:0.7rem;color:var(--muted);letter-spacing:2px;margin-bottom:0.5rem;}
+.q-text{font-weight:600;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;}
+@media(max-width:500px){.q-opts{grid-template-columns:1fr;}}
+.opt-btn{
+  padding:0.7rem 1rem;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg);color:var(--text);font-size:0.85rem;cursor:pointer;
+  transition:all 0.3s;text-align:left;font-family:'Exo 2',sans-serif;
+}
+.opt-btn:hover:not(:disabled){border-color:#34d399;color:#34d399;}
+.opt-btn.correct{background:rgba(16,185,129,0.2);border-color:#10b981;color:#10b981;font-weight:700;}
+.opt-btn.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#ef4444;}
+.opt-btn:disabled{cursor:default;}
+.q-feedback{margin-top:0.8rem;font-size:0.85rem;padding:0.5rem;border-radius:6px;display:none;}
+.q-feedback.show{display:block;}
+.q-feedback.ok{background:rgba(16,185,129,0.15);color:#10b981;}
+.q-feedback.err{background:rgba(239,68,68,0.1);color:#ef4444;}
+.quiz-result{
+  text-align:center;padding:2rem;background:linear-gradient(135deg,#34d39920,#06b6d410);
+  border:1px solid #34d39930;border-radius:14px;margin-top:1.5rem;display:none;
+}
+.result-emoji{font-size:3rem;margin-bottom:0.5rem;}
+.result-text{font-family:'Orbitron',sans-serif;font-size:1.1rem;margin-bottom:0.5rem;}
+.result-score{color:#34d399;font-size:2rem;font-weight:700;}
+.restart-btn{
+  margin-top:1rem;padding:0.8rem 2rem;border-radius:8px;
+  background:#34d399;color:#000;font-weight:700;cursor:pointer;
+  border:none;font-family:'Exo 2',sans-serif;font-size:0.9rem;
+}
+</style>
+</head>
+<body>
+<a href="index.html" class="back-btn">← Voltar ao Menu</a>
+
+<div class="lesson-hero">
+  <div class="lesson-badge">✅ AULA DE REVISÃO</div>
+  <div class="lesson-num">AULA 04 · TECNOLOGIAS EMERGENTES EM IA · 2º BIMESTRE 2026</div>
+  <h1 class="lesson-title">🗺️ Aplicando Visão Computacional ao Projeto Central de Avisos</h1>
+  <div class="lesson-date">📅 18/05/2026 (Segunda-feira) · EE Manoel Bonifácio Nunes da Cunha</div>
+  <div class="lesson-emoji">🗺️</div>
+</div>
+
+<div class="content-wrap">
+
+  <div class="section-head">📖 Introdução</div>
+  <div class="intro-box">Chegou a hora de conectar tudo que aprendemos sobre Visão Computacional ao nosso projeto! Nesta aula, transformamos conceitos em ideia aplicada: como a Central de Avisos pode usar imagens de cartazes, quadros e murais como <strong>fonte de informação inteligente</strong>? Vamos desenhar o fluxo completo!</div>
+
+  <div class="section-head">🎯 Conteúdo da Aula</div>
+  
+        <div class="topic-card" style="--delay:0.0s">
+          <div class="topic-icon">📷</div>
+          <div>
+            <div class="topic-title">Entrada — Captura da Imagem</div>
+            <div class="topic-desc">Um aluno fotografa um cartaz no corredor. Ou uma câmera instalada monitora o mural continuamente. Essa é a entrada de dados do sistema.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.1s">
+          <div class="topic-icon">🧠</div>
+          <div>
+            <div class="topic-title">Análise — Processamento com IA</div>
+            <div class="topic-desc">A IA processa a imagem: identifica se há texto, lê o conteúdo, classifica o tipo de aviso (prova, evento, urgente, horário) e extrai informações relevantes.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.2s">
+          <div class="topic-icon">📤</div>
+          <div>
+            <div class="topic-title">Saída — Informação Organizada</div>
+            <div class="topic-desc">O sistema entrega a informação de forma organizada: notificação no app, atualização automática do painel digital, alerta para o grupo da turma.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.30000000000000004s">
+          <div class="topic-icon">🔄</div>
+          <div>
+            <div class="topic-title">Fluxo Completo</div>
+            <div class="topic-desc">Imagem → Pré-processamento (OpenCV) → Detecção (YOLO) → Extração de texto (OCR) → Classificação → Aviso ao aluno. Cada etapa tem sua função.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.4s">
+          <div class="topic-icon">💡</div>
+          <div>
+            <div class="topic-title">Por que isso importa?</div>
+            <div class="topic-desc">Transforma problema real (alunos não veem avisos) em solução tecnológica. Conecta Visão Computacional a impacto prático no cotidiano escolar.</div>
+          </div>
+        </div>
+
+  <div class="section-head">🏗️ Microproduto da Aula</div>
+  <div class="product-box">
+    <h3>📦 O que você vai produzir</h3>
+    <p>Esquema visual de solução com fluxo: Entrada (imagem/cartaz) → Análise (tipo de aviso) → Saída (notificação). Com início, meio e fim claros, ligado ao problema escolar.</p>
+  </div>
+
+  <div class="section-head">🔗 Conexão com a Central de Avisos</div>
+  <div class="conexao-box">
+    <h3>📢 Central de Avisos</h3>
+    <p>Este é o núcleo do nosso projeto! A Central de Avisos usa exatamente essa lógica: captura visual → processamento inteligente → entrega de informação útil. Você acabou de desenhar o coração tecnológico do sistema.</p>
+  </div>
+
+  <div class="section-head">📒 Resumo para o Caderno</div>
+  <div class="summary-box">
+    <div class="summary-header">✏️ Copie as 10 linhas abaixo no seu caderno</div>
+    <div class="summary-line"><span class="sn">01</span><span>Na Central de Avisos, a Visão Computacional pode transformar imagens em informação organizada.</span></div>
+<div class="summary-line"><span class="sn">02</span><span>O fluxo básico é: captura da imagem, análise automática, identificação do conteúdo e saída.</span></div>
+<div class="summary-line"><span class="sn">03</span><span>A entrada pode ser foto tirada por aluno ou câmera monitorando o mural continuamente.</span></div>
+<div class="summary-line"><span class="sn">04</span><span>A IA processa a imagem identificando texto, classificando o tipo de aviso e extraindo dados.</span></div>
+<div class="summary-line"><span class="sn">05</span><span>A saída pode ser uma notificação no app, painel digital ou alerta para o grupo da turma.</span></div>
+<div class="summary-line"><span class="sn">06</span><span>OpenCV pode pré-processar a imagem antes de ser analisada por ferramentas mais avançadas.</span></div>
+<div class="summary-line"><span class="sn">07</span><span>OCR (Optical Character Recognition) é usado para extrair texto de imagens.</span></div>
+<div class="summary-line"><span class="sn">08</span><span>Classificar o aviso por categoria (prova, evento, urgente) torna a informação mais útil.</span></div>
+<div class="summary-line"><span class="sn">09</span><span>Isso resolve um problema real: alunos que não veem avisos importantes nos corredores.</span></div>
+<div class="summary-line"><span class="sn">10</span><span>Tecnologia só tem valor quando resolve problemas reais das pessoas.</span></div>
+
+    <button class="copy-btn" onclick="copySummary()">📋 Copiar Resumo</button>
+  </div>
+
+  <div class="section-head">🎮 Quiz Gamificado — 10 Questões</div>
+  <div class="quiz-section">
+    <div class="quiz-title">🏆 Quiz da Aula 04</div>
+    <div class="quiz-sub">Responda as questões e veja sua pontuação!</div>
+    <div class="score-bar">
+      <div class="score-item"><div class="score-num" id="correctCount">0</div><div class="score-label">✅ Acertos</div></div>
+      <div class="score-item"><div class="score-num" id="wrongCount">0</div><div class="score-label">❌ Erros</div></div>
+      <div class="score-item"><div class="score-num" id="totalCount">0</div><div class="score-label">📝 Respondidas</div></div>
+    </div>
+    
+        <div class="quiz-q" id="qq0">
+          <div class="q-num">Questão 1</div>
+          <div class="q-text">No fluxo da Central de Avisos, o que representa a 'entrada'?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="0" data-idx="0" data-correct="1">O resultado final</button>
+<button class="opt-btn" data-q="0" data-idx="1" data-correct="1">A foto ou imagem do cartaz</button>
+<button class="opt-btn" data-q="0" data-idx="2" data-correct="1">O aviso enviado ao aluno</button>
+<button class="opt-btn" data-q="0" data-idx="3" data-correct="1">O código do programa</button>
+</div>
+          <div class="q-feedback" id="fb0"></div>
+        </div>
+        <div class="quiz-q" id="qq1">
+          <div class="q-num">Questão 2</div>
+          <div class="q-text">O que a IA faz na etapa de 'análise'?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="1" data-idx="0" data-correct="1">Imprime o cartaz</button>
+<button class="opt-btn" data-q="1" data-idx="1" data-correct="1">Identifica texto, classifica o aviso e extrai informações</button>
+<button class="opt-btn" data-q="1" data-idx="2" data-correct="1">Envia e-mail manualmente</button>
+<button class="opt-btn" data-q="1" data-idx="3" data-correct="1">Apaga o cartaz</button>
+</div>
+          <div class="q-feedback" id="fb1"></div>
+        </div>
+        <div class="quiz-q" id="qq2">
+          <div class="q-num">Questão 3</div>
+          <div class="q-text">Qual tecnologia pode ler texto em imagens?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="2" data-idx="0" data-correct="1">GPS</button>
+<button class="opt-btn" data-q="2" data-idx="1" data-correct="1">OCR (Optical Character Recognition)</button>
+<button class="opt-btn" data-q="2" data-idx="2" data-correct="1">Bluetooth</button>
+<button class="opt-btn" data-q="2" data-idx="3" data-correct="1">Wi-Fi</button>
+</div>
+          <div class="q-feedback" id="fb2"></div>
+        </div>
+        <div class="quiz-q" id="qq3">
+          <div class="q-num">Questão 4</div>
+          <div class="q-text">Por que classificar o aviso por categoria é importante?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="3" data-idx="0" data-correct="1">Para deixar mais bonito</button>
+<button class="opt-btn" data-q="3" data-idx="1" data-correct="1">Para tornar a informação mais útil e organizada para o aluno</button>
+<button class="opt-btn" data-q="3" data-idx="2" data-correct="1">Para ocupar menos memória</button>
+<button class="opt-btn" data-q="3" data-idx="3" data-correct="1">Para não precisar de IA</button>
+</div>
+          <div class="q-feedback" id="fb3"></div>
+        </div>
+        <div class="quiz-q" id="qq4">
+          <div class="q-num">Questão 5</div>
+          <div class="q-text">Qual ferramenta pode ser usada para pré-processar imagens no fluxo?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="4" data-idx="0" data-correct="2">Excel</button>
+<button class="opt-btn" data-q="4" data-idx="1" data-correct="2">Word</button>
+<button class="opt-btn" data-q="4" data-idx="2" data-correct="2">OpenCV</button>
+<button class="opt-btn" data-q="4" data-idx="3" data-correct="2">PowerPoint</button>
+</div>
+          <div class="q-feedback" id="fb4"></div>
+        </div>
+        <div class="quiz-q" id="qq5">
+          <div class="q-num">Questão 6</div>
+          <div class="q-text">O que é a 'saída' no fluxo da Central de Avisos?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="5" data-idx="0" data-correct="1">A foto original</button>
+<button class="opt-btn" data-q="5" data-idx="1" data-correct="1">A notificação ou aviso entregue ao aluno de forma organizada</button>
+<button class="opt-btn" data-q="5" data-idx="2" data-correct="1">O cartaz físico</button>
+<button class="opt-btn" data-q="5" data-idx="3" data-correct="1">A câmera instalada</button>
+</div>
+          <div class="q-feedback" id="fb5"></div>
+        </div>
+        <div class="quiz-q" id="qq6">
+          <div class="q-num">Questão 7</div>
+          <div class="q-text">Por que a Central de Avisos resolve um problema real?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="6" data-idx="0" data-correct="1">Porque é cara</button>
+<button class="opt-btn" data-q="6" data-idx="1" data-correct="1">Porque muitos alunos não veem avisos importantes nos corredores</button>
+<button class="opt-btn" data-q="6" data-idx="2" data-correct="1">Porque exige programação avançada</button>
+<button class="opt-btn" data-q="6" data-idx="3" data-correct="1">Porque só funciona online</button>
+</div>
+          <div class="q-feedback" id="fb6"></div>
+        </div>
+        <div class="quiz-q" id="qq7">
+          <div class="q-num">Questão 8</div>
+          <div class="q-text">O que torna uma tecnologia realmente valiosa?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="7" data-idx="0" data-correct="1">Ser a mais recente</button>
+<button class="opt-btn" data-q="7" data-idx="1" data-correct="1">Resolver problemas reais das pessoas</button>
+<button class="opt-btn" data-q="7" data-idx="2" data-correct="1">Custar muito dinheiro</button>
+<button class="opt-btn" data-q="7" data-idx="3" data-correct="1">Ser muito complexa</button>
+</div>
+          <div class="q-feedback" id="fb7"></div>
+        </div>
+        <div class="quiz-q" id="qq8">
+          <div class="q-num">Questão 9</div>
+          <div class="q-text">Qual das etapas do fluxo envolve YOLO?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="8" data-idx="0" data-correct="2">Captura da imagem</button>
+<button class="opt-btn" data-q="8" data-idx="1" data-correct="2">Envio do aviso</button>
+<button class="opt-btn" data-q="8" data-idx="2" data-correct="2">Detecção de objetos e textos na imagem</button>
+<button class="opt-btn" data-q="8" data-idx="3" data-correct="2">Criação do cartaz</button>
+</div>
+          <div class="q-feedback" id="fb8"></div>
+        </div>
+        <div class="quiz-q" id="qq9">
+          <div class="q-num">Questão 10</div>
+          <div class="q-text">O fluxo completo da Central de Avisos com VC tem quantas etapas principais?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="9" data-idx="0" data-correct="2">1</button>
+<button class="opt-btn" data-q="9" data-idx="1" data-correct="2">2</button>
+<button class="opt-btn" data-q="9" data-idx="2" data-correct="2">3 ou mais</button>
+<button class="opt-btn" data-q="9" data-idx="3" data-correct="2">Nenhuma</button>
+</div>
+          <div class="q-feedback" id="fb9"></div>
+        </div>
+    <div class="quiz-result" id="quizResult">
+      <div class="result-emoji" id="resultEmoji">🏆</div>
+      <div class="result-text">Resultado Final!</div>
+      <div class="result-score" id="resultScore"></div>
+      <button class="restart-btn" onclick="restartQuiz()">🔄 Tentar Novamente</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let correct=0,wrong=0,answered=0;
+const total=10;
+const summaryLines=[...document.querySelectorAll('.summary-line')].map(l=>l.querySelector('span:last-child').textContent);
+
+function copySummary(){
+  const txt=summaryLines.map((l,i)=>`${i+1}. ${l}`).join('\n');
+  navigator.clipboard.writeText(txt).then(()=>alert('✅ Resumo copiado! Cole no seu caderno.'));
+}
+
+document.querySelectorAll('.opt-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const q=this.dataset.q;
+    const correctIdx=parseInt(this.dataset.correct);
+    const myIdx=parseInt(this.dataset.idx);
+    const container=document.getElementById('qq'+q);
+    if(container.classList.contains('answered')) return;
+    container.classList.add('answered');
+    container.querySelectorAll('.opt-btn').forEach(b=>{
+      b.disabled=true;
+      if(parseInt(b.dataset.idx)===correctIdx) b.classList.add('correct');
+      else if(b===this) b.classList.add('wrong');
+    });
+    const fb=document.getElementById('fb'+q);
+    fb.classList.add('show');
+    if(myIdx===correctIdx){
+      fb.textContent='✅ Correto! Muito bem!';
+      fb.classList.add('ok');
+      correct++;
+      document.getElementById('correctCount').textContent=correct;
+    }else{
+      fb.textContent='❌ Ops! A resposta correta está destacada em verde.';
+      fb.classList.add('err');
+      wrong++;
+      document.getElementById('wrongCount').textContent=wrong;
+    }
+    answered++;
+    document.getElementById('totalCount').textContent=answered;
+    if(answered===total){
+      const r=document.getElementById('quizResult');
+      r.style.display='block';
+      const score=Math.round((correct/total)*100);
+      document.getElementById('resultScore').textContent=correct+'/'+total+' ('+score+'%)';
+      document.getElementById('resultEmoji').textContent=score>=80?'🏆':score>=60?'😊':'💪';
+      r.scrollIntoView({behavior:'smooth'});
+    }
+  });
+});
+
+function restartQuiz(){
+  correct=0;wrong=0;answered=0;
+  ['correctCount','wrongCount','totalCount'].forEach(id=>document.getElementById(id).textContent='0');
+  document.getElementById('quizResult').style.display='none';
+  document.querySelectorAll('.quiz-q').forEach(q=>{
+    q.classList.remove('answered');
+    q.querySelectorAll('.opt-btn').forEach(b=>{
+      b.disabled=false;
+      b.classList.remove('correct','wrong');
+    });
+    q.querySelectorAll('.q-feedback').forEach(f=>{
+      f.classList.remove('show','ok','err');
+      f.textContent='';
+    });
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

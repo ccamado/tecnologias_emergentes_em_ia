@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 13 — Introdução à Computação Quântica — Ideia Geral e Diferença para a Computação Clássica</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c14; --surface:#0d1421; --card:#111827;
+  --accent1:#818cf8; --accent2:#c084fc;
+  --text:#e2e8f0; --muted:#64748b; --border:rgba(255,255,255,0.08);
+  --green:#10b981; --amber:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;}
+a{text-decoration:none;}
+
+.back-btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:rgba(255,255,255,0.05);border:1px solid var(--border);
+  padding:0.5rem 1rem;border-radius:8px;color:var(--muted);
+  font-size:0.8rem;transition:all 0.3s;margin:1.5rem 2rem;
+}
+.back-btn:hover{color:var(--accent1);border-color:var(--accent1);}
+
+/* HERO */
+.lesson-hero{
+  background:linear-gradient(135deg,#818cf822,#c084fc22);
+  border-bottom:1px solid var(--border);
+  padding:3rem 2rem 2rem; position:relative;overflow:hidden;
+}
+.lesson-hero::before{
+  content:''; position:absolute;top:-50%;right:-10%;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,#818cf820,transparent 70%);
+}
+.lesson-badge{
+  display:inline-block;background:rgba(245,158,11,0.2);
+  color:#f59e0b;border:1px solid #f59e0b40;
+  border-radius:20px;padding:0.3rem 1rem;font-size:0.75rem;
+  letter-spacing:2px;font-weight:700;margin-bottom:1rem;
+}
+.lesson-num{font-family:'Orbitron',sans-serif;font-size:0.75rem;color:var(--muted);margin-bottom:0.5rem;letter-spacing:3px;}
+.lesson-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,3vw,2rem);color:#818cf8;margin-bottom:0.5rem;line-height:1.2;}
+.lesson-date{color:var(--muted);font-size:0.85rem;}
+.lesson-emoji{font-size:5rem;position:absolute;right:3rem;top:50%;transform:translateY(-50%);opacity:0.15;}
+
+/* CONTENT */
+.content-wrap{max-width:900px;margin:0 auto;padding:2rem;}
+.section-head{
+  font-family:'Orbitron',sans-serif;font-size:0.85rem;
+  color:#818cf8;letter-spacing:3px;text-transform:uppercase;
+  margin:2.5rem 0 1rem;border-left:3px solid #818cf8;padding-left:1rem;
+}
+.intro-box{
+  background:linear-gradient(135deg,#818cf815,#c084fc10);
+  border:1px solid #818cf830;border-radius:14px;padding:1.5rem;
+  line-height:1.8;color:var(--text);font-size:0.95rem;margin-bottom:1.5rem;
+}
+.topic-card{
+  display:flex;align-items:flex-start;gap:1rem;
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1.2rem;margin-bottom:0.8rem;
+  animation:slideIn 0.5s ease var(--delay,0s) both;
+  transition:border-color 0.3s,transform 0.3s;
+}
+.topic-card:hover{border-color:#818cf8;transform:translateX(4px);}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.topic-icon{font-size:2rem;flex-shrink:0;}
+.topic-title{font-weight:700;color:#818cf8;margin-bottom:0.25rem;font-size:0.95rem;}
+.topic-desc{color:var(--muted);font-size:0.85rem;line-height:1.5;}
+
+/* PRODUCT */
+.product-box{
+  background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(0,212,255,0.1));
+  border:1px solid rgba(124,58,237,0.4);border-radius:14px;padding:1.5rem;
+}
+.product-box h3{font-family:'Orbitron',sans-serif;font-size:0.85rem;color:#7c3aed;margin-bottom:0.5rem;}
+.product-box p{color:var(--muted);font-size:0.9rem;line-height:1.6;}
+
+/* CONEXAO */
+.conexao-box{
+  background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(245,158,11,0.05));
+  border:1px solid rgba(245,158,11,0.3);border-radius:14px;padding:1.5rem;
+}
+.conexao-box h3{font-family:'Orbitron',sans-serif;font-size:0.85rem;color:var(--amber);margin-bottom:0.5rem;}
+.conexao-box p{color:var(--muted);font-size:0.9rem;line-height:1.6;}
+
+/* SUMMARY */
+.summary-box{
+  background:var(--surface);border:2px dashed #818cf840;border-radius:14px;padding:1.5rem;
+}
+.summary-header{
+  display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;
+  font-family:'Orbitron',sans-serif;font-size:0.85rem;color:#818cf8;
+}
+.summary-line{
+  display:flex;gap:0.8rem;align-items:flex-start;padding:0.5rem 0;
+  border-bottom:1px solid var(--border);font-size:0.85rem;line-height:1.5;
+}
+.summary-line:last-child{border-bottom:none;}
+.sn{
+  color:#818cf8;font-weight:700;font-size:0.75rem;
+  background:#818cf820;border-radius:4px;padding:0.1rem 0.4rem;
+  white-space:nowrap;
+}
+.copy-btn{
+  display:block;margin-top:1rem;text-align:center;
+  background:#818cf820;border:1px solid #818cf840;
+  color:#818cf8;padding:0.6rem;border-radius:8px;
+  font-size:0.8rem;cursor:pointer;transition:all 0.3s;
+}
+.copy-btn:hover{background:#818cf8;color:#000;}
+
+/* QUIZ */
+.quiz-section{background:var(--surface);border-radius:16px;padding:2rem;}
+.quiz-title{font-family:'Orbitron',sans-serif;font-size:1.2rem;color:#818cf8;text-align:center;margin-bottom:0.5rem;}
+.quiz-sub{text-align:center;color:var(--muted);font-size:0.85rem;margin-bottom:2rem;}
+.score-bar{display:flex;justify-content:center;gap:2rem;margin-bottom:2rem;}
+.score-item{text-align:center;}
+.score-num{font-family:'Orbitron',sans-serif;font-size:2rem;color:#818cf8;}
+.score-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;}
+.quiz-q{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1.5rem;margin-bottom:1rem;transition:border-color 0.3s;
+}
+.quiz-q.answered{border-color:#818cf840;}
+.q-num{font-size:0.7rem;color:var(--muted);letter-spacing:2px;margin-bottom:0.5rem;}
+.q-text{font-weight:600;font-size:0.95rem;margin-bottom:1rem;line-height:1.5;}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;}
+@media(max-width:500px){.q-opts{grid-template-columns:1fr;}}
+.opt-btn{
+  padding:0.7rem 1rem;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg);color:var(--text);font-size:0.85rem;cursor:pointer;
+  transition:all 0.3s;text-align:left;font-family:'Exo 2',sans-serif;
+}
+.opt-btn:hover:not(:disabled){border-color:#818cf8;color:#818cf8;}
+.opt-btn.correct{background:rgba(16,185,129,0.2);border-color:#10b981;color:#10b981;font-weight:700;}
+.opt-btn.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#ef4444;}
+.opt-btn:disabled{cursor:default;}
+.q-feedback{margin-top:0.8rem;font-size:0.85rem;padding:0.5rem;border-radius:6px;display:none;}
+.q-feedback.show{display:block;}
+.q-feedback.ok{background:rgba(16,185,129,0.15);color:#10b981;}
+.q-feedback.err{background:rgba(239,68,68,0.1);color:#ef4444;}
+.quiz-result{
+  text-align:center;padding:2rem;background:linear-gradient(135deg,#818cf820,#c084fc10);
+  border:1px solid #818cf830;border-radius:14px;margin-top:1.5rem;display:none;
+}
+.result-emoji{font-size:3rem;margin-bottom:0.5rem;}
+.result-text{font-family:'Orbitron',sans-serif;font-size:1.1rem;margin-bottom:0.5rem;}
+.result-score{color:#818cf8;font-size:2rem;font-weight:700;}
+.restart-btn{
+  margin-top:1rem;padding:0.8rem 2rem;border-radius:8px;
+  background:#818cf8;color:#000;font-weight:700;cursor:pointer;
+  border:none;font-family:'Exo 2',sans-serif;font-size:0.9rem;
+}
+</style>
+</head>
+<body>
+<a href="index.html" class="back-btn">← Voltar ao Menu</a>
+
+<div class="lesson-hero">
+  <div class="lesson-badge">🔥 AULA DE HOJE</div>
+  <div class="lesson-num">AULA 13 · TECNOLOGIAS EMERGENTES EM IA · 2º BIMESTRE 2026</div>
+  <h1 class="lesson-title">⚛️ Introdução à Computação Quântica — Ideia Geral e Diferença para a Computação Clássica</h1>
+  <div class="lesson-date">📅 01/06/2026 (Segunda-feira) — HOJE! · EE Manoel Bonifácio Nunes da Cunha</div>
+  <div class="lesson-emoji">⚛️</div>
+</div>
+
+<div class="content-wrap">
+
+  <div class="section-head">📖 Introdução</div>
+  <div class="intro-box">E se um computador pudesse estar em mil estados ao mesmo tempo? Isso é o que a <strong>Computação Quântica</strong> promete! Baseada na física quântica — a ciência do mundo microscópico — ela representa uma nova forma de computar. Não vamos fazer cálculos quânticos, mas vamos entender a ideia e por que ela importa para o futuro da IA.</div>
+
+  <div class="section-head">🎯 Conteúdo da Aula</div>
+  
+        <div class="topic-card" style="--delay:0.0s">
+          <div class="topic-icon">💻</div>
+          <div>
+            <div class="topic-title">Computação Clássica — O que conhecemos</div>
+            <div class="topic-desc">Bits são 0 ou 1. Um processador executa operações uma de cada vez (ou em paralelo limitado). A complexidade cresce com problemas maiores.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.1s">
+          <div class="topic-icon">⚛️</div>
+          <div>
+            <div class="topic-title">Computação Quântica — A nova fronteira</div>
+            <div class="topic-desc">Usa princípios da mecânica quântica. Qubits podem representar 0, 1 ou ambos ao mesmo tempo (superposição). Isso permite processar muito mais possibilidades simultaneamente.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.2s">
+          <div class="topic-icon">🔄</div>
+          <div>
+            <div class="topic-title">Superposição — O Segredo do Qubit</div>
+            <div class="topic-desc">Enquanto um bit clássico é como uma moeda: cara ou coroa. Um qubit é como uma moeda girando: cara E coroa ao mesmo tempo — só colapsa quando observado.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.30000000000000004s">
+          <div class="topic-icon">🌐</div>
+          <div>
+            <div class="topic-title">Entrelaçamento — Qubits Conectados</div>
+            <div class="topic-desc">Dois qubits podem ser entrelaçados: o estado de um afeta instantaneamente o outro, independente da distância. Einstein chamou de 'ação fantasmagórica à distância'.</div>
+          </div>
+        </div>
+        <div class="topic-card" style="--delay:0.4s">
+          <div class="topic-icon">🚀</div>
+          <div>
+            <div class="topic-title">Por que importa para IA?</div>
+            <div class="topic-desc">Problemas de otimização, simulação molecular, criptografia e treinamento de modelos de IA poderiam ser resolvidos muito mais rapidamente com computação quântica.</div>
+          </div>
+        </div>
+
+  <div class="section-head">🏗️ Microproduto da Aula</div>
+  <div class="product-box">
+    <h3>📦 O que você vai produzir</h3>
+    <p>Quadro comparativo com 4 diferenças simples entre computação clássica e computação quântica, em linguagem acessível.</p>
+  </div>
+
+  <div class="section-head">🔗 Conexão com a Central de Avisos</div>
+  <div class="conexao-box">
+    <h3>📢 Central de Avisos</h3>
+    <p>A Central de Avisos hoje usa computação clássica. No futuro, algoritmos quânticos poderiam processar padrões complexos de comunicação escolar em tempo real, otimizando qual aviso chega para qual aluno com qual prioridade — em fração de segundo.</p>
+  </div>
+
+  <div class="section-head">📒 Resumo para o Caderno</div>
+  <div class="summary-box">
+    <div class="summary-header">✏️ Copie as 10 linhas abaixo no seu caderno</div>
+    <div class="summary-line"><span class="sn">01</span><span>A computação quântica é baseada em princípios da mecânica quântica, a física do mundo microscópico.</span></div>
+<div class="summary-line"><span class="sn">02</span><span>Na computação clássica, bits são 0 ou 1; na quântica, qubits podem ser 0, 1 ou ambos (superposição).</span></div>
+<div class="summary-line"><span class="sn">03</span><span>Superposição é a propriedade do qubit de existir em múltiplos estados ao mesmo tempo.</span></div>
+<div class="summary-line"><span class="sn">04</span><span>Entrelaçamento quântico conecta dois qubits: o estado de um afeta o outro instantaneamente.</span></div>
+<div class="summary-line"><span class="sn">05</span><span>Computadores quânticos podem processar muito mais possibilidades simultaneamente que os clássicos.</span></div>
+<div class="summary-line"><span class="sn">06</span><span>Isso torna a computação quântica promissora para problemas de otimização e simulação complexa.</span></div>
+<div class="summary-line"><span class="sn">07</span><span>A tecnologia ainda está em desenvolvimento e enfrenta desafios técnicos significativos.</span></div>
+<div class="summary-line"><span class="sn">08</span><span>Computadores quânticos funcionam em temperaturas extremamente baixas, perto do zero absoluto.</span></div>
+<div class="summary-line"><span class="sn">09</span><span>Empresas como IBM, Google e Microsoft investem em computação quântica ativamente.</span></div>
+<div class="summary-line"><span class="sn">10</span><span>O objetivo desta aula é compreender a ideia geral sem aprofundamento matemático.</span></div>
+
+    <button class="copy-btn" onclick="copySummary()">📋 Copiar Resumo</button>
+  </div>
+
+  <div class="section-head">🎮 Quiz Gamificado — 10 Questões</div>
+  <div class="quiz-section">
+    <div class="quiz-title">🏆 Quiz da Aula 13</div>
+    <div class="quiz-sub">Responda as questões e veja sua pontuação!</div>
+    <div class="score-bar">
+      <div class="score-item"><div class="score-num" id="correctCount">0</div><div class="score-label">✅ Acertos</div></div>
+      <div class="score-item"><div class="score-num" id="wrongCount">0</div><div class="score-label">❌ Erros</div></div>
+      <div class="score-item"><div class="score-num" id="totalCount">0</div><div class="score-label">📝 Respondidas</div></div>
+    </div>
+    
+        <div class="quiz-q" id="qq0">
+          <div class="q-num">Questão 1</div>
+          <div class="q-text">O que é um qubit?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="0" data-idx="0" data-correct="1">Um bit de alta velocidade</button>
+<button class="opt-btn" data-q="0" data-idx="1" data-correct="1">A unidade básica da computação quântica, que pode ser 0, 1 ou ambos simultaneamente</button>
+<button class="opt-btn" data-q="0" data-idx="2" data-correct="1">Um processador quântico</button>
+<button class="opt-btn" data-q="0" data-idx="3" data-correct="1">Um tipo de memória RAM</button>
+</div>
+          <div class="q-feedback" id="fb0"></div>
+        </div>
+        <div class="quiz-q" id="qq1">
+          <div class="q-num">Questão 2</div>
+          <div class="q-text">O que é superposição quântica?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="1" data-idx="0" data-correct="1">Colocar vários computadores em cima um do outro</button>
+<button class="opt-btn" data-q="1" data-idx="1" data-correct="1">A propriedade do qubit de existir em múltiplos estados ao mesmo tempo</button>
+<button class="opt-btn" data-q="1" data-idx="2" data-correct="1">Uma técnica de programação</button>
+<button class="opt-btn" data-q="1" data-idx="3" data-correct="1">Um erro de sistema</button>
+</div>
+          <div class="q-feedback" id="fb1"></div>
+        </div>
+        <div class="quiz-q" id="qq2">
+          <div class="q-num">Questão 3</div>
+          <div class="q-text">Como os bits da computação clássica diferem dos qubits?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="2" data-idx="0" data-correct="1">Bits são maiores</button>
+<button class="opt-btn" data-q="2" data-idx="1" data-correct="1">Bits são 0 ou 1; qubits podem ser 0, 1 ou ambos ao mesmo tempo</button>
+<button class="opt-btn" data-q="2" data-idx="2" data-correct="1">Qubits são mais lentos</button>
+<button class="opt-btn" data-q="2" data-idx="3" data-correct="1">Não há diferença</button>
+</div>
+          <div class="q-feedback" id="fb2"></div>
+        </div>
+        <div class="quiz-q" id="qq3">
+          <div class="q-num">Questão 4</div>
+          <div class="q-text">O que é entrelaçamento quântico?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="3" data-idx="0" data-correct="1">Dois fios conectados</button>
+<button class="opt-btn" data-q="3" data-idx="1" data-correct="1">Quando dois qubits se conectam e o estado de um afeta instantaneamente o outro</button>
+<button class="opt-btn" data-q="3" data-idx="2" data-correct="1">Um tipo de erro quântico</button>
+<button class="opt-btn" data-q="3" data-idx="3" data-correct="1">Uma técnica de criptografia comum</button>
+</div>
+          <div class="q-feedback" id="fb3"></div>
+        </div>
+        <div class="quiz-q" id="qq4">
+          <div class="q-num">Questão 5</div>
+          <div class="q-text">Por que a computação quântica é importante para IA?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="4" data-idx="0" data-correct="1">Porque é mais barata</button>
+<button class="opt-btn" data-q="4" data-idx="1" data-correct="1">Pode resolver problemas de otimização e treinamento de IA muito mais rapidamente</button>
+<button class="opt-btn" data-q="4" data-idx="2" data-correct="1">Porque já está disponível para todos</button>
+<button class="opt-btn" data-q="4" data-idx="3" data-correct="1">Porque substitui humanos</button>
+</div>
+          <div class="q-feedback" id="fb4"></div>
+        </div>
+        <div class="quiz-q" id="qq5">
+          <div class="q-num">Questão 6</div>
+          <div class="q-text">Em que temperatura funcionam computadores quânticos?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="5" data-idx="0" data-correct="2">Temperatura ambiente</button>
+<button class="opt-btn" data-q="5" data-idx="1" data-correct="2">Alta temperatura — mais de 100°C</button>
+<button class="opt-btn" data-q="5" data-idx="2" data-correct="2">Temperatura extremamente baixa, próxima ao zero absoluto</button>
+<button class="opt-btn" data-q="5" data-idx="3" data-correct="2">Qualquer temperatura</button>
+</div>
+          <div class="q-feedback" id="fb5"></div>
+        </div>
+        <div class="quiz-q" id="qq6">
+          <div class="q-num">Questão 7</div>
+          <div class="q-text">Qual empresa demonstrou 'supremacia quântica' em 2019?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="6" data-idx="0" data-correct="2">Apple</button>
+<button class="opt-btn" data-q="6" data-idx="1" data-correct="2">Microsoft</button>
+<button class="opt-btn" data-q="6" data-idx="2" data-correct="2">Google</button>
+<button class="opt-btn" data-q="6" data-idx="3" data-correct="2">Amazon</button>
+</div>
+          <div class="q-feedback" id="fb6"></div>
+        </div>
+        <div class="quiz-q" id="qq7">
+          <div class="q-num">Questão 8</div>
+          <div class="q-text">A metáfora da moeda girando representa:</div>
+          <div class="q-opts"><button class="opt-btn" data-q="7" data-idx="0" data-correct="1">Um bit clássico</button>
+<button class="opt-btn" data-q="7" data-idx="1" data-correct="1">A superposição do qubit — cara E coroa ao mesmo tempo antes de ser observado</button>
+<button class="opt-btn" data-q="7" data-idx="2" data-correct="1">O entrelaçamento</button>
+<button class="opt-btn" data-q="7" data-idx="3" data-correct="1">Um erro de leitura</button>
+</div>
+          <div class="q-feedback" id="fb7"></div>
+        </div>
+        <div class="quiz-q" id="qq8">
+          <div class="q-num">Questão 9</div>
+          <div class="q-text">A computação quântica é considerada tecnologia emergente porque:</div>
+          <div class="q-opts"><button class="opt-btn" data-q="8" data-idx="0" data-correct="1">Já está completamente desenvolvida</button>
+<button class="opt-btn" data-q="8" data-idx="1" data-correct="1">Está em desenvolvimento acelerado com grande potencial transformador para o futuro</button>
+<button class="opt-btn" data-q="8" data-idx="2" data-correct="1">É usada por todo mundo</button>
+<button class="opt-btn" data-q="8" data-idx="3" data-correct="1">É muito barata</button>
+</div>
+          <div class="q-feedback" id="fb8"></div>
+        </div>
+        <div class="quiz-q" id="qq9">
+          <div class="q-num">Questão 10</div>
+          <div class="q-text">Como a computação quântica poderia beneficiar a Central de Avisos no futuro?</div>
+          <div class="q-opts"><button class="opt-btn" data-q="9" data-idx="0" data-correct="1">Não tem relação</button>
+<button class="opt-btn" data-q="9" data-idx="1" data-correct="1">Processar padrões complexos e otimizar qual aviso chega para qual aluno com qual prioridade em fração de segundo</button>
+<button class="opt-btn" data-q="9" data-idx="2" data-correct="1">Imprimir avisos mais rápido</button>
+<button class="opt-btn" data-q="9" data-idx="3" data-correct="1">Criar mais usuários</button>
+</div>
+          <div class="q-feedback" id="fb9"></div>
+        </div>
+    <div class="quiz-result" id="quizResult">
+      <div class="result-emoji" id="resultEmoji">🏆</div>
+      <div class="result-text">Resultado Final!</div>
+      <div class="result-score" id="resultScore"></div>
+      <button class="restart-btn" onclick="restartQuiz()">🔄 Tentar Novamente</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let correct=0,wrong=0,answered=0;
+const total=10;
+const summaryLines=[...document.querySelectorAll('.summary-line')].map(l=>l.querySelector('span:last-child').textContent);
+
+function copySummary(){
+  const txt=summaryLines.map((l,i)=>`${i+1}. ${l}`).join('\n');
+  navigator.clipboard.writeText(txt).then(()=>alert('✅ Resumo copiado! Cole no seu caderno.'));
+}
+
+document.querySelectorAll('.opt-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const q=this.dataset.q;
+    const correctIdx=parseInt(this.dataset.correct);
+    const myIdx=parseInt(this.dataset.idx);
+    const container=document.getElementById('qq'+q);
+    if(container.classList.contains('answered')) return;
+    container.classList.add('answered');
+    container.querySelectorAll('.opt-btn').forEach(b=>{
+      b.disabled=true;
+      if(parseInt(b.dataset.idx)===correctIdx) b.classList.add('correct');
+      else if(b===this) b.classList.add('wrong');
+    });
+    const fb=document.getElementById('fb'+q);
+    fb.classList.add('show');
+    if(myIdx===correctIdx){
+      fb.textContent='✅ Correto! Muito bem!';
+      fb.classList.add('ok');
+      correct++;
+      document.getElementById('correctCount').textContent=correct;
+    }else{
+      fb.textContent='❌ Ops! A resposta correta está destacada em verde.';
+      fb.classList.add('err');
+      wrong++;
+      document.getElementById('wrongCount').textContent=wrong;
+    }
+    answered++;
+    document.getElementById('totalCount').textContent=answered;
+    if(answered===total){
+      const r=document.getElementById('quizResult');
+      r.style.display='block';
+      const score=Math.round((correct/total)*100);
+      document.getElementById('resultScore').textContent=correct+'/'+total+' ('+score+'%)';
+      document.getElementById('resultEmoji').textContent=score>=80?'🏆':score>=60?'😊':'💪';
+      r.scrollIntoView({behavior:'smooth'});
+    }
+  });
+});
+
+function restartQuiz(){
+  correct=0;wrong=0;answered=0;
+  ['correctCount','wrongCount','totalCount'].forEach(id=>document.getElementById(id).textContent='0');
+  document.getElementById('quizResult').style.display='none';
+  document.querySelectorAll('.quiz-q').forEach(q=>{
+    q.classList.remove('answered');
+    q.querySelectorAll('.opt-btn').forEach(b=>{
+      b.disabled=false;
+      b.classList.remove('correct','wrong');
+    });
+    q.querySelectorAll('.q-feedback').forEach(f=>{
+      f.classList.remove('show','ok','err');
+      f.textContent='';
+    });
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
