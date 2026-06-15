@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 20 - Google AutoML e Microsoft Azure Machine Learning</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="index.html" class="btn-back">← Voltar ao Menu</a>
+<div class="aula-container">
+  <div class="aula-hero">
+    <div class="aula-num">AULA DE HOJE</div>
+    <h1>☁️ Google AutoML e Microsoft Azure Machine Learning em visao geral</h1>
+    <div class="aula-meta"><span>📅 15/06/2026</span><span>⏱ 50 min</span><span>🎯 Central de Avisos</span><span>📚 Tecnologias Emergentes em IA</span></div>
+  </div>
+
+  <div class="card">
+    <h2>🎯 Objetivo da aula</h2>
+    <p>Entender o papel de plataformas de aprendizado de maquina que apoiam a criacao, o treinamento, o teste e a avaliacao de modelos de IA, sem tratar essas ferramentas como solucoes magicas.</p>
+    <div class="destaque">Pergunta-guia: se a Central de Avisos recebesse muitos comunicados, como uma plataforma de IA poderia ajudar a classifica-los?</div>
+  </div>
+
+  <div class="card roxo">
+    <h2>📘 Conteudo principal</h2>
+    <p>Google AutoML e Microsoft Azure Machine Learning sao exemplos de ambientes que ajudam equipes a criar modelos de IA. Eles podem oferecer recursos visuais, automacao de etapas e acompanhamento de metricas. Mesmo assim, qualquer modelo depende da qualidade dos dados e da clareza do objetivo.</p>
+    <div class="conceito-box"><strong>Modelo de classificacao:</strong> e um tipo de modelo que aprende exemplos anteriores e tenta escolher uma categoria para novos dados. Na Central de Avisos, as categorias poderiam ser Prova, Trabalho, Evento, Aviso ou HorarioExtra.</div>
+    <p>Um erro comum e pensar que basta colocar dados em uma ferramenta para obter inteligencia. Na pratica, e preciso preparar exemplos, separar dados de teste, avaliar acertos e erros, revisar vieses e decidir quando o sistema deve pedir ajuda humana.</p>
+  </div>
+
+  <div class="card azul">
+    <h2>🛠️ Aula pratica guiada</h2>
+    <p><strong>Atividade:</strong> simular, no caderno, um pequeno conjunto de treinamento para classificar avisos escolares.</p>
+    <table class="tabela">
+      <tr><th>Etapa</th><th>Acao do aluno</th><th>Exemplo</th></tr>
+      <tr><td>1</td><td>Escrever 8 mensagens curtas de avisos.</td><td>"Prova de Matematica na sexta."</td></tr>
+      <tr><td>2</td><td>Rotular cada mensagem com uma categoria.</td><td>Categoria: Prova.</td></tr>
+      <tr><td>3</td><td>Separar 6 exemplos para treino e 2 para teste.</td><td>Treino ensina; teste confere.</td></tr>
+      <tr><td>4</td><td>Definir uma regra de avaliacao.</td><td>Acertou a categoria? Sim ou nao.</td></tr>
+      <tr><td>5</td><td>Anotar quando a IA deveria pedir confirmacao.</td><td>Mensagem ambigua ou incompleta.</td></tr>
+    </table>
+  </div>
+
+  <div class="card verde">
+    <h2>📦 Microproduto</h2>
+    <p>Produza uma tabela com tres colunas: <strong>ferramenta</strong>, <strong>o que permite fazer</strong> e <strong>exemplo possivel na Central de Avisos</strong>.</p>
+    <div class="destaque">Criterio de qualidade: explicar que a plataforma apoia o processo, mas que dados organizados, testes e validacao continuam sendo indispensaveis.</div>
+  </div>
+
+  <div class="caderno-section">
+    <h3>📝 Resumo para o Caderno — Aula 20</h3>
+    <ol>
+      <li>Google AutoML e Azure Machine Learning sao plataformas de apoio a projetos de IA.</li>
+      <li>Elas ajudam a criar, treinar, testar e avaliar modelos de aprendizado de maquina.</li>
+      <li>Um modelo de classificacao pode separar informacoes em categorias.</li>
+      <li>Na Central de Avisos, categorias possiveis sao Prova, Trabalho, Evento, Aviso e HorarioExtra.</li>
+      <li>O modelo precisa de exemplos anteriores para aprender padroes.</li>
+      <li>Dados ruins podem gerar respostas ruins.</li>
+      <li>Testar o modelo e necessario para saber se ele funciona bem.</li>
+      <li>Mensagens ambiguas devem ser revisadas por uma pessoa.</li>
+      <li>Plataformas de IA ajudam, mas nao substituem planejamento.</li>
+      <li>A ideia principal e usar IA com dados organizados, criterio e responsabilidade.</li>
+    </ol>
+  </div>
+
+  <div class="quiz-section">
+    <h2>🎮 Quiz — Aula 20</h2>
+    <p style="opacity:0.8;margin-bottom:16px">Responda e confira sua pontuacao.</p>
+    <form id="quiz20" data-quiz='[{"q":"Qual e a funcao geral de plataformas como AutoML e Azure ML?","options":["Apoiar criacao, treinamento, teste e avaliacao de modelos","Substituir todos os professores","Criar dados verdadeiros automaticamente","Eliminar a necessidade de teste"],"answer":0},{"q":"O que e um modelo de classificacao?","options":["Um modelo que escolhe uma categoria para um dado","Uma tabela sem dados","Um editor de imagens","Um tipo de cabo de rede"],"answer":0},{"q":"Na Central de Avisos, uma categoria possivel e:","options":["Prova","Cor da parede","Marca do monitor","Nome do mouse"],"answer":0},{"q":"Por que os dados precisam estar organizados?","options":["Porque a qualidade dos dados afeta o resultado do modelo","Porque a IA nao usa dados","Porque organizacao nao importa","Porque evita qualquer erro automaticamente"],"answer":0},{"q":"O que significa separar dados de teste?","options":["Guardar exemplos para avaliar se o modelo aprendeu","Apagar os exemplos mais dificeis","Misturar todas as respostas","Usar somente imagens"],"answer":0},{"q":"Quando o sistema deveria pedir ajuda humana?","options":["Quando a mensagem for ambigua ou incompleta","Sempre que acertar","Quando houver uma data clara","Nunca"],"answer":0},{"q":"Qual afirmacao e mais correta?","options":["A plataforma apoia o trabalho, mas nao faz milagre","A plataforma dispensa objetivo","A plataforma garante 100% de acerto","A plataforma elimina responsabilidade"],"answer":0},{"q":"Um exemplo de mensagem para categoria Trabalho seria:","options":["Entregar pesquisa de Biologia ate quinta-feira","Intervalo comecou","Bom dia","A sala tem cadeiras"],"answer":0},{"q":"O microproduto da aula e:","options":["tabela ferramenta / o que permite fazer / exemplo possivel","desenho livre sem relacao","resumo de robos","codigo completo em Python"],"answer":0},{"q":"A principal aprendizagem da aula e:","options":["usar IA com dados, teste e responsabilidade","confiar cegamente em qualquer modelo","ignorar erros","classificar sem exemplos"],"answer":0}]'>
+      <div class="quiz-question"><h4>1. Qual e a funcao geral de plataformas como AutoML e Azure ML?</h4><label class="quiz-option"><input type="radio" name="q0" value="0"> Apoiar criacao, treinamento, teste e avaliacao de modelos</label><label class="quiz-option"><input type="radio" name="q0" value="1"> Substituir todos os professores</label><label class="quiz-option"><input type="radio" name="q0" value="2"> Criar dados verdadeiros automaticamente</label><label class="quiz-option"><input type="radio" name="q0" value="3"> Eliminar a necessidade de teste</label></div>
+      <div class="quiz-question"><h4>2. O que e um modelo de classificacao?</h4><label class="quiz-option"><input type="radio" name="q1" value="0"> Um modelo que escolhe uma categoria para um dado</label><label class="quiz-option"><input type="radio" name="q1" value="1"> Uma tabela sem dados</label><label class="quiz-option"><input type="radio" name="q1" value="2"> Um editor de imagens</label><label class="quiz-option"><input type="radio" name="q1" value="3"> Um tipo de cabo de rede</label></div>
+      <div class="quiz-question"><h4>3. Na Central de Avisos, uma categoria possivel e:</h4><label class="quiz-option"><input type="radio" name="q2" value="0"> Prova</label><label class="quiz-option"><input type="radio" name="q2" value="1"> Cor da parede</label><label class="quiz-option"><input type="radio" name="q2" value="2"> Marca do monitor</label><label class="quiz-option"><input type="radio" name="q2" value="3"> Nome do mouse</label></div>
+      <div class="quiz-question"><h4>4. Por que os dados precisam estar organizados?</h4><label class="quiz-option"><input type="radio" name="q3" value="0"> Porque a qualidade dos dados afeta o resultado do modelo</label><label class="quiz-option"><input type="radio" name="q3" value="1"> Porque a IA nao usa dados</label><label class="quiz-option"><input type="radio" name="q3" value="2"> Porque organizacao nao importa</label><label class="quiz-option"><input type="radio" name="q3" value="3"> Porque evita qualquer erro automaticamente</label></div>
+      <div class="quiz-question"><h4>5. O que significa separar dados de teste?</h4><label class="quiz-option"><input type="radio" name="q4" value="0"> Guardar exemplos para avaliar se o modelo aprendeu</label><label class="quiz-option"><input type="radio" name="q4" value="1"> Apagar os exemplos mais dificeis</label><label class="quiz-option"><input type="radio" name="q4" value="2"> Misturar todas as respostas</label><label class="quiz-option"><input type="radio" name="q4" value="3"> Usar somente imagens</label></div>
+      <div class="quiz-question"><h4>6. Quando o sistema deveria pedir ajuda humana?</h4><label class="quiz-option"><input type="radio" name="q5" value="0"> Quando a mensagem for ambigua ou incompleta</label><label class="quiz-option"><input type="radio" name="q5" value="1"> Sempre que acertar</label><label class="quiz-option"><input type="radio" name="q5" value="2"> Quando houver uma data clara</label><label class="quiz-option"><input type="radio" name="q5" value="3"> Nunca</label></div>
+      <div class="quiz-question"><h4>7. Qual afirmacao e mais correta?</h4><label class="quiz-option"><input type="radio" name="q6" value="0"> A plataforma apoia o trabalho, mas nao faz milagre</label><label class="quiz-option"><input type="radio" name="q6" value="1"> A plataforma dispensa objetivo</label><label class="quiz-option"><input type="radio" name="q6" value="2"> A plataforma garante 100% de acerto</label><label class="quiz-option"><input type="radio" name="q6" value="3"> A plataforma elimina responsabilidade</label></div>
+      <div class="quiz-question"><h4>8. Um exemplo de mensagem para categoria Trabalho seria:</h4><label class="quiz-option"><input type="radio" name="q7" value="0"> Entregar pesquisa de Biologia ate quinta-feira</label><label class="quiz-option"><input type="radio" name="q7" value="1"> Intervalo comecou</label><label class="quiz-option"><input type="radio" name="q7" value="2"> Bom dia</label><label class="quiz-option"><input type="radio" name="q7" value="3"> A sala tem cadeiras</label></div>
+      <div class="quiz-question"><h4>9. O microproduto da aula e:</h4><label class="quiz-option"><input type="radio" name="q8" value="0"> tabela ferramenta / o que permite fazer / exemplo possivel</label><label class="quiz-option"><input type="radio" name="q8" value="1"> desenho livre sem relacao</label><label class="quiz-option"><input type="radio" name="q8" value="2"> resumo de robos</label><label class="quiz-option"><input type="radio" name="q8" value="3"> codigo completo em Python</label></div>
+      <div class="quiz-question"><h4>10. A principal aprendizagem da aula e:</h4><label class="quiz-option"><input type="radio" name="q9" value="0"> usar IA com dados, teste e responsabilidade</label><label class="quiz-option"><input type="radio" name="q9" value="1"> confiar cegamente em qualquer modelo</label><label class="quiz-option"><input type="radio" name="q9" value="2"> ignorar erros</label><label class="quiz-option"><input type="radio" name="q9" value="3"> classificar sem exemplos</label></div>
+    </form>
+    <div class="quiz-actions"><button class="quiz-btn" onclick="corrigirQuiz('quiz20')">Corrigir quiz</button><button class="quiz-btn secondary" onclick="resetarQuiz('quiz20')">Tentar novamente</button></div>
+    <div class="quiz-result"><strong>Pontuacao: <span class="quiz-score">0/10</span></strong><div class="quiz-bar"><div></div></div><p>Aproveitamento: <span class="quiz-pct">0%</span></p><p class="quiz-msg"></p></div>
+  </div>
+</div>
+<script src="quiz.js"></script>
+</body>
+</html>
